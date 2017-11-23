@@ -1,0 +1,19 @@
+{
+  "name": "quarters",
+  "version": "1.0.0",
+  "description": "Temp web app for Stör ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Emmanuel Olaojo & Chike Udenze",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "1.0.3",
+    "body-parser": "1.18.2",
+    "express": "4.16.2",
+    "jsonwebtoken": "8.1.0",
+    "mongoose": "4.13.4",
+    "morgan": "1.9.0"
+  }
+}
