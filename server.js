@@ -6,9 +6,12 @@
 let express = require("express");
 let logger = require("morgan");
 let bodyParser = require("body-parser");
+let mongoose = require("mongoose");
 
 let config = require("./config");
 let ApiRouter = require("./app/Routes");
+
+mongoose.connect(config.DB_URL, {useMongoClient: true});
 
 let app = express();
 
