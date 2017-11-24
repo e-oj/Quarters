@@ -18,7 +18,7 @@ exports.createItem = async function(req, res){
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
   let item = new Item();
-  let user = req.user;
+  let owner = req.user;
 
   item["name"] = req.body["name"];
   item["size"] = req.body["size"];
@@ -42,7 +42,7 @@ exports.createItem = async function(req, res){
 exports.getAllItems = async function(req, res){
     let respond = response.success(res);
     let respondErr = response.failure(res, moduleId);
-    let user = req.user;
+    let owner = req.user;
     try{
         items = await Item.find({"user": user });
         respond(http.OK,"All Items Found", {items});
@@ -64,7 +64,7 @@ exports.getOneItem = async function(req, res){
     let respondErr = response.failure(res,moduleId);
 
     let itemID = req.query["id"];
-    let user = req.user;
+    let owner = req.user;
     try{
         items = await Item.find({"user": user });
         item = await Item.findOne({"_id": itemID});
