@@ -8,7 +8,7 @@ let jwt = Promise.promisifyAll(require("jsonwebtoken"));
 let config = require("../config");
 let response = require("./response");
 let http = require("./HttpStats");
-let Users = require("../app/models/User").Users;
+let Users = require("../app/models/User").User;
 
 let moduleId = "utils/authToken";
 
@@ -24,12 +24,12 @@ let moduleId = "utils/authToken";
  */
 async function checkToken(req, res, next){
   let respondErr = response.failure(res, moduleId);
-  let authToken = req.get(config.authToken);
+  let authToken = req.get(config.AUTH_TOKEN);
 
   if(!authToken) return respondErr(http.UNAUTHORIZED, "Missing u_auth token");
 
   try {
-    let user = await jwt.verifyAsync(authToken, config.secret);
+    let user = await jwt.verifyAsync(authToken, config.SECRET);
     user = await Users.findById(user._id);
 
     if(!user){
@@ -46,7 +46,7 @@ async function checkToken(req, res, next){
 }
 
 /**
- * Creates a token from a Users's details
+ * Creates a token from a users's details
  *
  * @param user the user
  *
@@ -55,7 +55,7 @@ async function checkToken(req, res, next){
 async function createToken(user){
   let {_id, alias} = user;
 
-  return await jwt.signAsync({_id, alias}, config.secret, {expiresIn: "24h"});
+  return await jwt.signAsync({_id, alias}, config.SECRET, {expiresIn: "24h"});
 }
 
 module.exports = {checkToken, createToken};

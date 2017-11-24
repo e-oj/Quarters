@@ -5,8 +5,11 @@
 
 //todo: add check for error status code
 function failure(res, moduleId){
+  if(!moduleId) throw new Error("Missing moduleId!!!!! OOOOOOOO!!! HENRYYYY!!!");
 
   return function(status, message, error){
+    if(!status) throw new Error("Missing status!!!!! OOOOOOOO!!! HENRYYYY!!!");
+
     message = message || "OOPS!!! something went wrong!";
 
     res.status(status);
@@ -22,6 +25,8 @@ function failure(res, moduleId){
 function success(res){
 
   return function(status, message, result){
+    if(!status) throw new Error("Missing status!!!!! OOOOOOOO!!! HENRYYYY!!!");
+
     res.status(status);
 
     res.json({
