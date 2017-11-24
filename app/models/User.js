@@ -10,13 +10,13 @@ let validator = require("validator");
 const ERR_REQUIRED = "{PATH} is required";
 
 let Schema = mongoose.Schema({
-  alias: {type: String, required: ERR_REQUIRED, unique: true}
+  alias: {type: String, unique: true, required: ERR_REQUIRED}
   , email: {
     type: String
-    , unique: true
     , required: ERR_REQUIRED
+    , unique: true
     , validate: {
-      validator: validator.isEmail
+      validator: val => validator.isEmail(val)
       , message: "Invalid Email {VALUE}"
     }
   }
@@ -25,12 +25,9 @@ let Schema = mongoose.Schema({
   , last_name: {type: String, required: ERR_REQUIRED}
   , phone: {
     type: String
-    , unique: true
     , required: ERR_REQUIRED
     , validate: {
-      validator: function(v) {
-        return /\d{3}-\d{3}-\d{4}/.test(v);
-      }
+      validator: val => validator.isMobilePhone(val, "en-US")
       , message: "Invalid Phone Number"
     }
   }
