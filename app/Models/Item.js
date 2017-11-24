@@ -11,4 +11,4 @@ let Schema = new mongoose.Schema({
     }
 
 );
-exports.Item = mongoose.model("Items", Schema);
+exports.Item = mongoose.model("Item", Schema);

@@ -9,10 +9,11 @@ let bodyParser = require("body-parser");
 let mongoose = require("mongoose");
 
 let config = require("./config");
-let ApiRouter = require("./app/Routes");
+let ApiRouter = require("./app/Api");
+
+mongoose.Promise = Promise;
 
 mongoose.connect(config.DB_URL, {useMongoClient: true});
-
 let app = express();
 
 app.use(logger("dev"));

@@ -14,5 +14,9 @@ ApiRouter.get("/", (req, res) => {
 
   respond(http.OK, "Hello World");
 });
+let itemRouter = require("./item/index");
+
+ApiRouter.use("/i", itemRouter);
 
 module.exports = ApiRouter;
+
