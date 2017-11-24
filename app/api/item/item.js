@@ -7,10 +7,14 @@ let response = require("../../../utils/response");
 let http = require("../../../utils/HttpStats");
 let moduleId = "api/item/item";
 let Item = require("../../models/Item").Item;
+
 /**
  * Creates Item and returns success or failure response
+ *
  * @param req request
  * @param res response
+ *
+ * @returns {Promise.<void>}
  */
 exports.createItem = async function(req, res){
   let respond = response.success(res);
@@ -33,8 +37,10 @@ exports.createItem = async function(req, res){
 
 /**
  * returns all items for a given user.
+ *
  * @param req request
  * @param res response
+ *
  * @returns {Promise.<void>}
  */
 exports.getAllItems = async function(req, res){
@@ -53,8 +59,10 @@ exports.getAllItems = async function(req, res){
 
 /**
  * returns the item with given _id in request query
+ *
  * @param req request
  * @param res response
+ *
  * @returns {Promise.<void>}
  */
 exports.getOneItem = async function(req, res){
