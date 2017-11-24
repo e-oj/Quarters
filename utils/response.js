@@ -5,6 +5,7 @@
 
 //todo: add check for error status code
 function failure(res, moduleId){
+  if(!moduleId) throw new Error("Missing moduleId!!!!! OOOOOOOO!!! HENRYYYY!!!");
 
   return function(status, message, error){
     if(!status) throw new Error("Missing status!!!!! OOOOOOOO!!! HENRYYYY!!!");

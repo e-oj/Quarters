@@ -7,11 +7,16 @@ let express = require("express");
 let logger = require("morgan");
 let bodyParser = require("body-parser");
 let mongoose = require("mongoose");
+let bluebird = require("bluebird");
+
+global.Promise = bluebird;
 
 let config = require("./config");
-let ApiRouter = require("./app/Routes");
 
+mongoose.Promise = Promise;
 mongoose.connect(config.DB_URL, {useMongoClient: true});
+
+let ApiRouter = require("./app/Api");
 
 let app = express();
 
