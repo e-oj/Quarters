@@ -31,9 +31,9 @@ exports.createItem = async function(req, res){
 
 };
 /**
- *
- * @param req
- * @param res
+ * returns all items for a given user.
+ * @param req request
+ * @param res response
  * @returns {Promise.<void>}
  */
 exports.getAllItems = async function(req, res){
