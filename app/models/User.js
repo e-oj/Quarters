@@ -9,8 +9,9 @@ let validator = require("validator");
 
 const REQUIRED = "{PATH} is required";
 
-let Schema = mongoose.Schema({
+let Schema = new mongoose.Schema({
   alias: {type: String, unique: true, required: REQUIRED}
+  , admin: {type: Boolean, default: false}
   , email: {
     type: String
     , required: REQUIRED
@@ -37,15 +38,14 @@ let Schema = mongoose.Schema({
 Schema.pre("save", async function(next){
   let doc = this;
 
-  if(doc.isModified("password")){
-    let rounds = 10;
-
-    try{
+  try{
+    if(doc.isModified("password")){
+      let rounds = 10;
       doc.password = await bcrypt.hash(doc.password, rounds);
     }
-    catch(err){
-      return next(err);
-    }
+  }
+  catch(err){
+    return next(err);
   }
 
   next();

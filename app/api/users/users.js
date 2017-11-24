@@ -38,6 +38,12 @@ exports.createUser = async (req, res) => {
     user[prop] = req.body[prop];
   }
 
+  let noUserExists = ! await User.findOne().exec();
+
+  if(noUserExists){
+    user.admin = true;
+  }
+
   try{
     user = await user.save();
     user = user.toObject();

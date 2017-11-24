@@ -16,7 +16,7 @@ let config = require("./config");
 mongoose.Promise = Promise;
 mongoose.connect(config.DB_URL, {useMongoClient: true});
 
-let ApiRouter = require("./app/Api");
+let ApiRouter = require("./app/api");
 
 let app = express();
 
