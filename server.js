@@ -26,6 +26,16 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use("/api", ApiRouter);
 
-app.listen(config.PORT);
+let server = app.listen(config.PORT);
+
+server.on("close", async err => {
+  if(err) throw err;
+
+  console.log("\nClosing db connections...\n");
+  await mongoose.disconnect();
+  console.log("Server Out!! *drops mic*");
+});
+
+process.on("SIGINT", server.close);
 
 console.log(`Running on port: ${config.PORT}`);

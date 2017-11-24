@@ -24,7 +24,7 @@ let moduleId = "utils/authToken";
  */
 async function checkToken(req, res, next){
   let respondErr = response.failure(res, moduleId);
-  let authToken = req.get(config.authToken);
+  let authToken = req.get(config.AUTH_TOKEN);
 
   if(!authToken) return respondErr(http.UNAUTHORIZED, "Missing u_auth token");
 

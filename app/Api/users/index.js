@@ -6,11 +6,12 @@
 let express = require("express");
 
 let users = require("./users");
+let auth = require("../../../utils/authToken");
 
 let userRouter = express.Router();
 
 userRouter.route("/")
-  .get(users.getUser)
+  .get(auth.checkToken, users.getUser)
   .post(users.createUser);
 
 module.exports = userRouter;
