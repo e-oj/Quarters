@@ -26,6 +26,7 @@ Schema.pre("save", async function(next){
     try{
       doc.password = await bcrypt.hash(doc.password, rounds);
     }
+
     catch(err){
       return next(err);
     }
