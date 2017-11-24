@@ -5,9 +5,9 @@
 
 let response = require("../../../utils/response");
 let http = require("../../../utils/HttpStats");
-let moduleId = "Api/item/item";
-let Item = require("../../Models/Item").Item;
-let User = require("../../Models/User").User;
+let moduleId = "api/item/item";
+let Item = require("../../models/Item").Item;
+let User = require("../../models/User").User;
 /**
  *Creates Item and returns success or failure response
  *
