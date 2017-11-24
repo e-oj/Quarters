@@ -11,7 +11,9 @@ let auth = require("../../../utils/authToken");
 let userRouter = express.Router();
 
 userRouter.route("/")
-  .get(auth.checkToken, users.getUser)
-  .post(users.createUser);
+  .post(users.createUser)
+  .put(auth.checkToken, users.editUser)
+  .get(auth.checkToken, users.getUser);
+
 
 module.exports = userRouter;

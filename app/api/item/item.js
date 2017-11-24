@@ -1,36 +1,34 @@
 /**
-* @author Chike Udenze
-* @since 11/23/2017
-*/
+ * @author Chike Udenze
+ * @since 11/23/2017
+ */
 
 let response = require("../../../utils/response");
 let http = require("../../../utils/HttpStats");
 let moduleId = "api/item/item";
 let Item = require("../../models/Item").Item;
-let User = require("../../models/User").User;
-let auth = require("../../../utils/authToken");
 /**
  * Creates Item and returns success or failure response
  * @param req request
  * @param res response
  */
 exports.createItem = async function(req, res){
-    let respond = response.success(res);
-    let respondErr = response.failure(res, moduleId);
-    let item = new Item();
-    let ownerID = req.user["_id"];
+  let respond = response.success(res);
+  let respondErr = response.failure(res, moduleId);
+  let item = new Item();
+  let ownerID = req.user["_id"];
 
-    item["name"] = req.body["name"];
-    item["size"] = req.body["size"];
-    item["userID"] = ownerID;
+  item["name"] = req.body["name"];
+  item["size"] = req.body["size"];
+  item["userID"] = ownerID;
 
-    try{
-        item = await item.save();
-        respond(http.CREATED,"Item Created", {item});
-    }
-    catch(err){
-        respondErr(http.BAD_REQUEST,err.message,err);
-    }
+  try{
+    item = await item.save();
+    respond(http.CREATED,"Item Created", {item});
+  }
+  catch(err){
+    respondErr(http.BAD_REQUEST,err.message,err);
+  }
 };
 
 /**
@@ -40,16 +38,17 @@ exports.createItem = async function(req, res){
  * @returns {Promise.<void>}
  */
 exports.getAllItems = async function(req, res){
-    let respond = response.success(res);
-    let respondErr = response.failure(res, moduleId);
-    let ownerID = req.user["_id"];
-    try{
-        items = await Item.find({"userID": ownerID});
-        respond(http.OK,"All Items Found", {items});
-    }
-    catch(err){
-        respondErr(http.BAD_REQUEST,err.message,err);
-    }
+  let respond = response.success(res);
+  let respondErr = response.failure(res, moduleId);
+  let ownerID = req.user["_id"];
+  try{
+    items = await Item.find({"userID": ownerID});
+
+    respond(http.OK,"All Items Found", {items});
+  }
+  catch(err){
+    respondErr(http.BAD_REQUEST,err.message,err);
+  }
 };
 
 /**
@@ -59,18 +58,18 @@ exports.getAllItems = async function(req, res){
  * @returns {Promise.<void>}
  */
 exports.getOneItem = async function(req, res){
-    let respond = response.success(res);
-    let respondErr = response.failure(res,moduleId);
+  let respond = response.success(res);
+  let respondErr = response.failure(res,moduleId);
 
-    let itemID = req.query["id"];
-    let ownerID = req.user["_id"];
-    try{
-        items = await Item.find({"userID": ownerID});
-        item = await Item.findOne({"_id": itemID});
-        item = item.toObject();
-        respond(http.OK,"Item Found", {item});
-    }
-    catch(err){
-        respondErr(http.BAD_REQUEST,err.message,err);
-    }
+  let itemID = req.query["id"];
+  let ownerID = req.user["_id"];
+  try{
+    items = await Item.find({"userID": ownerID});
+    item = await Item.findOne({"_id": itemID});
+    item = item.toObject();
+    respond(http.OK,"Item Found", {item});
+  }
+  catch(err){
+    respondErr(http.BAD_REQUEST,err.message,err);
+  }
 };
