@@ -10,8 +10,7 @@ let Item = require("../../models/Item").Item;
 let User = require("../../models/User").User;
 let auth = require("../../../utils/authToken");
 /**
- *Creates Item and returns success or failure response
- *
+ * Creates Item and returns success or failure response
  * @param req request
  * @param res response
  */
@@ -32,8 +31,8 @@ exports.createItem = async function(req, res){
     catch(err){
         respondErr(http.BAD_REQUEST,err.message,err);
     }
-
 };
+
 /**
  * returns all items for a given user.
  * @param req request
@@ -59,7 +58,6 @@ exports.getAllItems = async function(req, res){
  * @param res response
  * @returns {Promise.<void>}
  */
-
 exports.getOneItem = async function(req, res){
     let respond = response.success(res);
     let respondErr = response.failure(res,moduleId);
@@ -75,6 +73,4 @@ exports.getOneItem = async function(req, res){
     catch(err){
         respondErr(http.BAD_REQUEST,err.message,err);
     }
-
-
 };

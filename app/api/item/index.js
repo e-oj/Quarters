@@ -6,9 +6,7 @@
 
 let express = require("express");
 let auth = require("../../../utils/authToken");
-
 let item = require("./item");
-
 let itemRouter = express.Router();
 
 itemRouter.post("/new",auth.checkToken,item.createItem);
