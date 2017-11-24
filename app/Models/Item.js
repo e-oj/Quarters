@@ -8,6 +8,8 @@ const ERR_REQUIRED = `{PATH} is required`;
 
 let Schema = new mongoose.Schema({
   name: {type: String, required: ERR_REQUIRED}
+  ,size: {type:String, required: ERR_REQUIRED}
+  ,user: {type: Schema.Types.ObjectId, ref: 'Story', required:ERR_REQUIRED}
     }
 
 );

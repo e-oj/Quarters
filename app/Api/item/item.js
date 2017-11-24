@@ -18,8 +18,11 @@ exports.createItem = async function(req, res){
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
   let item = new Item();
+  let user = req.user;
 
   item["name"] = req.body["name"];
+  item["size"] = req.body["size"];
+  item["user"] = req.body["user"];
 
   try{
       item = await item.save();
@@ -39,9 +42,9 @@ exports.createItem = async function(req, res){
 exports.getAllItems = async function(req, res){
     let respond = response.success(res);
     let respondErr = response.failure(res, moduleId);
-
+    let user = req.user;
     try{
-        items = await Item.find();
+        items = await Item.find({"user": user });
         respond(http.OK,"All Items Found", {items});
     }
     catch(err){
@@ -61,7 +64,9 @@ exports.getOneItem = async function(req, res){
     let respondErr = response.failure(res,moduleId);
 
     let itemID = req.query["id"];
+    let user = req.user;
     try{
+        items = await Item.find({"user": user });
         item = await Item.findOne({"_id": itemID});
         item = item.toObject();
         respond(http.OK,"Item Found", {item});
