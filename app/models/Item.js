@@ -8,9 +8,9 @@ const ERR_REQUIRED = `{PATH} is required`;
 let MongooseSchema = mongoose.Schema;
 
 let Schema = new mongoose.Schema({
-        name: {type: String, required: ERR_REQUIRED}
-        ,size: {type:String, required: ERR_REQUIRED}
-        ,userID: {type: MongooseSchema.Types.ObjectId, ref: 'Users', required:ERR_REQUIRED}
-    });
+  name: {type: String, required: ERR_REQUIRED}
+  ,size: {type:String, required: ERR_REQUIRED}
+  ,userID: {type: MongooseSchema.Types.ObjectId, ref: 'Users', required:ERR_REQUIRED}
+});
 
 exports.Item = mongoose.model("Item", Schema);
