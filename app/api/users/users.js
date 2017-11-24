@@ -10,6 +10,14 @@ let http = require("../../../utils/HttpStats");
 let User = require("../../models/User").User;
 let auth = require("../../../utils/authToken");
 
+/**
+ * Route handler to get users
+ *
+ * @param req request
+ * @param res response
+ *
+ * @returns {Promise.<*>}
+ */
 exports.getUser = async (req, res) => {
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
@@ -26,6 +34,14 @@ exports.getUser = async (req, res) => {
   }
 };
 
+/**
+ * Route handler to create a user
+ *
+ * @param req request
+ * @param res response
+ *
+ * @returns {Promise.<void>}
+ */
 exports.createUser = async (req, res) => {
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
@@ -58,6 +74,14 @@ exports.createUser = async (req, res) => {
   }
 };
 
+/**
+ * Route handler to edit user
+ *
+ * @param req request
+ * @param res response
+ *
+ * @returns {Promise.<void>}
+ */
 exports.editUser = async (req, res) => {
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
