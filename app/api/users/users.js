@@ -10,6 +10,14 @@ let http = require("../../../utils/HttpStats");
 let User = require("../../models/User").User;
 let auth = require("../../../utils/authToken");
 
+/**
+ * Route handler to get users
+ *
+ * @param req request
+ * @param res response
+ *
+ * @returns {Promise.<*>}
+ */
 exports.getUser = async (req, res) => {
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
@@ -26,6 +34,14 @@ exports.getUser = async (req, res) => {
   }
 };
 
+/**
+ * Route handler to create a user
+ *
+ * @param req request
+ * @param res response
+ *
+ * @returns {Promise.<void>}
+ */
 exports.createUser = async (req, res) => {
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
@@ -38,14 +54,53 @@ exports.createUser = async (req, res) => {
     user[prop] = req.body[prop];
   }
 
+  let noUserExists = ! await User.findOne().exec();
+
+  if(noUserExists){
+    user.admin = true;
+  }
+
   try{
     user = await user.save();
     user = user.toObject();
     let token = await auth.createToken(user);
 
-    delete user["password"];
+    delete user.password;
 
     respond(http.CREATED, "User Created", {user, token});
+  }
+  catch(err){
+    respondErr(http.BAD_REQUEST, err.message, err);
+  }
+};
+
+/**
+ * Route handler to edit user
+ *
+ * @param req request
+ * @param res response
+ *
+ * @returns {Promise.<void>}
+ */
+exports.editUser = async (req, res) => {
+  let respond = response.success(res);
+  let respondErr = response.failure(res, moduleId);
+
+  try{
+    let user = req.user;
+    let props = [
+      "alias", "email", "password", "first_name", "last_name", "phone", "address"
+    ];
+
+    for(let prop of props){
+      if(req.body[prop]){
+        user[prop] = req.body[prop];
+      }
+    }
+
+    user = await user.save();
+
+    respond(http.OK, "User Edited", {user});
   }
   catch(err){
     respondErr(http.BAD_REQUEST, err.message, err);
