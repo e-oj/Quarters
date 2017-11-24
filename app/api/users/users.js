@@ -49,9 +49,34 @@ exports.createUser = async (req, res) => {
     user = user.toObject();
     let token = await auth.createToken(user);
 
-    delete user["password"];
+    delete user.password;
 
     respond(http.CREATED, "User Created", {user, token});
+  }
+  catch(err){
+    respondErr(http.BAD_REQUEST, err.message, err);
+  }
+};
+
+exports.editUser = async (req, res) => {
+  let respond = response.success(res);
+  let respondErr = response.failure(res, moduleId);
+
+  try{
+    let user = req.user;
+    let props = [
+      "alias", "email", "password", "first_name", "last_name", "phone", "address"
+    ];
+
+    for(let prop of props){
+      if(req.body[prop]){
+        user[prop] = req.body[prop];
+      }
+    }
+
+    user = await user.save();
+
+    respond(http.OK, "User Edited", {user});
   }
   catch(err){
     respondErr(http.BAD_REQUEST, err.message, err);
