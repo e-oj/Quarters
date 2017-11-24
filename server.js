@@ -36,6 +36,6 @@ server.on("close", async err => {
   console.log("Server Out!! *drops mic*");
 });
 
-process.on("SIGINT", server.close);
+process.on("SIGINT", () => server.close());
 
 console.log(`Running on port: ${config.PORT}`);
