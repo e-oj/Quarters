@@ -22,7 +22,7 @@ let moduleId = "utils/authToken";
  *
  * @returns {Promise.<*>}
  */
-async function checkToken(req, res, next){
+exports.checkToken = async (req, res, next) => {
   let respondErr = response.failure(res, moduleId);
   let authToken = req.get(config.AUTH_TOKEN);
 
@@ -43,7 +43,18 @@ async function checkToken(req, res, next){
   catch(err){
     respondErr(http.UNAUTHORIZED, config.DEFAULT_ERR_MSG, err);
   }
-}
+};
+
+exports.checkAdmin = (req, res, next) => {
+  let respondErr = response.failure(res, moduleId);
+  let user = req.user;
+
+  if(!user.admin){
+    return respondErr(http.UNAUTHORIZED, "You're UNAUTHORIZED!!!!");
+  }
+
+  next();
+};
 
 /**
  * Creates a token from a users's details
@@ -52,10 +63,8 @@ async function checkToken(req, res, next){
  *
  * @returns {Promise.<*>}
  */
-async function createToken(user){
+exports.createToken = async (user) => {
   let {_id, alias} = user;
 
   return await jwt.signAsync({_id, alias}, config.SECRET, {expiresIn: "24h"});
-}
-
-module.exports = {checkToken, createToken};
+};
