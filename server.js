@@ -9,7 +9,8 @@ let logger = require("morgan");
 let bodyParser = require("body-parser");
 let mongoose = require("mongoose");
 let bluebird = require("bluebird");
-global.Promise = mongoose.promise = bluebird;
+
+mongoose.Promise = global.Promise = bluebird;
 
 let config = require("./config");
 let ApiRouter = require("./app/api");
