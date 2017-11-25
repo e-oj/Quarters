@@ -7,6 +7,8 @@ let moduleId = "api/hosts/hosts";
 let response = require("../../../utils/response");
 let http = require("../../../utils/HttpStats");
 let Host = require("../../models/Host").Host;
+let File = require("../../../utils/files");
+let fs = Promise.promisifyAll(require("fs"));
 
 /**
  * Creates host object and stores in database
@@ -18,15 +20,27 @@ exports.createHost = async function(req,res){
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
   let host = new Host();
-
+  let img = req.file;
+  console.log(img);
   host["first_name"] = req.body["first_name"];
   host["last_name"] = req.body["last_name"];
 
   try{
+    await File.attachImage(img,host,"image");
     host = await host.save();
+    host.toObject();
     respond(http.CREATED,"Host Created", {host});
   }
   catch(err){
+    if(req.file){
+      let path = img.path;
+      try{
+        await fs.unlinkAsync(path);
+      }
+      catch(err){
+        console.log(err);
+      }
+    }
     respondErr(http.BAD_REQUEST,err.message,err);
   }
 
@@ -40,11 +54,14 @@ exports.createHost = async function(req,res){
 exports.editHost = async function(req,res){
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
-
+  let img = req.file;
   try{
+
     let hostID = req.query["_id"];
     let props = ["first_name", "last_name"];
-
+    if(img) {
+      await File.attachImage(img, host, "image");
+    }
     host = await Host.findOne({"_id:": hostID});
 
     for(let prop of props){
@@ -53,10 +70,18 @@ exports.editHost = async function(req,res){
       }
     }
     host = await host.save();
-
     respond(http.OK, "Host Edited", {host});
   }
   catch(err){
+    if(req.file){
+      let path = img.path;
+      try{
+        await fs.unlinkAsync(path);
+      }
+      catch(err){
+        console.log(err);
+      }
+    }
     respondErr(http.BAD_REQUEST, err.message, err);
   }
 };
