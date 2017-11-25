@@ -15,5 +15,4 @@ userRouter.route("/")
   .put(auth.checkToken, users.editUser)
   .get(auth.checkToken, users.getUser);
 
-
 module.exports = userRouter;

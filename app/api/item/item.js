@@ -3,9 +3,9 @@
  * @since 11/23/2017
  */
 
+let moduleId = "api/item/item";
 let response = require("../../../utils/response");
 let http = require("../../../utils/HttpStats");
-let moduleId = "api/item/item";
 let Item = require("../../models/Item").Item;
 
 /**
@@ -72,7 +72,7 @@ exports.getOneItem = async function(req, res){
   let itemID = req.query["id"];
   let ownerID = req.user["_id"];
   try{
-    items = await Item.find({"userID": ownerID});
+    item = await Item.find({"userID": ownerID});
     item = await Item.findOne({"_id": itemID});
     item = item.toObject();
     respond(http.OK,"Item Found", {item});

@@ -13,9 +13,11 @@ let http = require("../../utils/HttpStats");
 
 let userRouter = require("./users");
 let itemRouter = require("./item");
+let hostRouter = require("./hosts");
 
 apiRouter.use("/u", userRouter);
 apiRouter.use("/i", itemRouter);
+apiRouter.use("/h", hostRouter);
 
 apiRouter.get("/", (req, res) => {
   let respond = response.success(res, moduleId);
