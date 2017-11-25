@@ -11,6 +11,7 @@ let Schema = new mongoose.Schema({
   name: {type: String, required: ERR_REQUIRED}
   ,size: {type:String, required: ERR_REQUIRED}
   ,userID: {type: MongooseSchema.Types.ObjectId, ref: 'Users', required:ERR_REQUIRED}
+  ,hostID: {type: MongooseSchema.Types.ObjectId, ref: 'Hosts', required:ERR_REQUIRED}
 });
 
 exports.Item = mongoose.model("Item", Schema);
