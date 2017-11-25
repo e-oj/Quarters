@@ -3,28 +3,34 @@
  * @since 11/22/17
  */
 
+let path = require("path");
 let express = require("express");
 let logger = require("morgan");
 let bodyParser = require("body-parser");
 let mongoose = require("mongoose");
 let bluebird = require("bluebird");
 
-global.Promise = bluebird;
+mongoose.Promise = global.Promise = bluebird;
 
 let config = require("./config");
-
-mongoose.Promise = Promise;
-mongoose.connect(config.DB_URL, {useMongoClient: true});
-
 let ApiRouter = require("./app/api");
 
+mongoose.connect(config.DB_URL, {useMongoClient: true});
+
+const STATIC = path.join(__dirname, "public");
 let app = express();
+
+app.use(express.static(STATIC));
 
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use("/api", ApiRouter);
+
+app.get("/", (req, res) => {
+  res.sendFile(`${STATIC}/index.html`);
+});
 
 let server = app.listen(config.PORT);
 
