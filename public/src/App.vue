@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <nav-bar></nav-bar>
-    <router-view></router-view>
+    <div id="content" class="full">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -21,16 +23,27 @@
 </script>
 
 <style>
+  html{
+    font-size: 90%;
+  }
+
+  html, body{
+    height: 100%;
+    margin: 0;
+  }
+
   #app {
     height: 100%;
     width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: relative;
   }
 
-  .content{
-    position: relative;
-    top: 80px;
+  #content{
+    height: 100%;
+  }
+
+  .full{
+    width: 100%;
+    height: 100%;
   }
 </style>
