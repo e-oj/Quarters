@@ -1,3 +1,7 @@
+<!-- @author Chike Udenze
+     @since -->
+
+
 <template>
 
   <div id="app">
@@ -100,17 +104,17 @@
           <input type="radio" id="pickupDate" v-model="form.pickupPicked" v-bind:value="date"/>
       </div>
       <br>
-      <span>Pickup Date Picked: {{form.pickupPicked }}</span>
+      <span>Pickup Date Picked: December {{form.pickupPicked }}</span>
     </div>
     <div>
       <h2>Set your Delivery Date</h2>
       <h4> January </h4>
-      <div v-for="date in form.pickupDates">
+      <div v-for="date in form.deliveryDates">
         <label for="deliveryDate">{{date}}</label>
         <input type="radio" id="deliveryDate" v-model="form.deliveryPicked" v-bind:value="date"/>
       </div>
       <br>
-      <span>Delivery Date Picked: {{form.deliveryPicked }}</span>
+      <span>Delivery Date Selected: January {{form.deliveryPicked }}</span>
     </div>
   </div>
 </template>
@@ -120,35 +124,41 @@
 
 <script>
  export default {
-    data() {
-      return {
-        form: {
-          name: '',
-          username:'',
-          password:'',
-          address:'',
-          email:'',
-          city:'',
-          state:'',
-          zipcode:'',
-          number:'',
-          pickupDates: ["10th","11th","12th","13th","14th","15th","16th","18th","19th","20th"],
-          deliveryDates: ["7th","8th","9th","10th","11th", "12th","13th","15th","16th","17th"],
-          pickupPicked: [],
-          deliveryPicked: [],
-          sizes: ["5'x5'","5'x10'","10'x15'","10'x20'"],
-          sizePicked: ''
-        }
-      }
-    }
+   data() {
+     return {
+       form: {
+         name: '',
+         username: '',
+         password: '',
+         address: '',
+         email: '',
+         city: '',
+         state: '',
+         zipcode: '',
+         number: '',
+         pickupDates: ["10th", "11th", "12th", "13th", "14th", "15th", "16th", "18th", "19th", "20th"],
+         deliveryDates: ["7th", "8th", "9th", "10th", "11th", "12th", "13th", "15th", "16th", "17th"],
+         pickupPicked: [],
+         deliveryPicked: [],
+         sizes: ["5'x5'", "5'x10'", "10'x15'", "10'x20'"],
+         sizePicked: ''
+       }
+     }
+   },
 
-   // methods() {
-     // return {
-       // selectDate: function (event) {
-        //}
-      //}
-    //}
-
-
-  }
+   methods() {
+     return {
+       /**
+        * function to check upon the user clicking 'Register' that all required fields are filled.
+        */
+       fieldValidator: function () {
+         for (field in form) {
+           if (!field) {
+             // input highlight the field in red and add 'Required' in text to the right of the input field.
+           }
+         }
+       }
+     }
+   }
+ }
 </script>
