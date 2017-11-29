@@ -51,6 +51,12 @@ new Vue({
    */
   , mounted(){
     let self = this;
+    const FONT_RATIO = 0.1;
+    let $body = $("body");
+
+    $body.css({
+      fontSize: (window.screen.availWidth * FONT_RATIO) + "px"
+    });
 
     self.$nextTick(function(){
       $window = $(window);

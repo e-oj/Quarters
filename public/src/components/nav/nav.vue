@@ -7,11 +7,15 @@
       <div id="nav-items">
         <ul>
           <li><a href="/">About</a></li>
-          <li><a href="">Hosts</a></li>
-          <li><a href="">Rates</a></li>
-          <li><a href="">Team</a></li>
+          <li><a href="/">Hosts</a></li>
+          <li><a href="/">Rates</a></li>
+          <li><a href="/">Team</a></li>
+          <li v-if="admin"><a href="/">Add Host</a></li>
         </ul>
-        <div class="nav-action"><a href="">Book Now</a></div>
+        <div class="nav-action">
+          <a href="">Book Now</a>
+          <a href="">Login</a>
+        </div>
       </div>
     </div>
   </div>
@@ -19,6 +23,11 @@
 
 <script>
   export default {
+    data(){
+      return {
+        admin: false
+      }
+    }
   }
 </script>
 
@@ -46,8 +55,8 @@
   }
 
   #nav-bar{
-    font-family: Lato, "Helvetica Neue", sans-serif;
-    font-size: 0.8em;
+    font-family: Nunito, Quicksand, sans-serif;
+    font-size: 0.08em;
     color: white;
     width: 60%;
     height: 80%;
@@ -56,12 +65,11 @@
     display: flex;
     align-items: center;
     align-content: center;
-    transition: all 2s linear;
   }
 
   #nav-bar .logo{
     margin-right: auto;
-    width: 30%;
+    width: 20%;
     min-width: 50px;
   }
 
@@ -109,11 +117,16 @@
   }
 
   .nav-action a{
-    outline: 3px solid white;
-    width: 100%;
-    padding: 10px;
+    border: 2px solid white;
+    border-radius: 50px;
+    padding: 5px 20px;
+    margin-right: 15px;
     color: white;
     transition: background 0.2s linear;
+  }
+
+  .nav-action a:last-child{
+    margin-right: 0;
   }
 
   .nav-action a:hover{
