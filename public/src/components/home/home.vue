@@ -20,7 +20,7 @@
       <h1>How It Works</h1>
       <div id="steps">
         <div v-for="step in how">
-          <img :src="step.img.src" :width="step.img.width" :height="step"/>
+          <img :src="step.img.src" :width="step.img.width" :height="step.img.height"/>
           <p>
             {{step.description}}
           </p>
