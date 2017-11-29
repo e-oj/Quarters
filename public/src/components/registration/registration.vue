@@ -1,164 +1,160 @@
 <!-- @author Chike Udenze
-     @since -->
+     @since 11/29/2017
+ -->
 
 
 <template>
+  <div id="container" class="full vertical-container">
+    <div id="splash">
+      <div id="title-text">Sign Up</div>
+      <div id="subtitle-text">Enter in all your information to create your <strong>stör</strong> account.</div>
 
-  <div id="app">
-    <div>
-      <section>
-        <h1>Registration Form</h1>
-        <p>
-          Enter in all your information to create your <strong>Stör</strong> account.
-        </p>
-        <hr>
+          <hr>
+          <!-- form starts here -->
+        <div id="form-border">
+          <form>
+            <div class="field">
+              <input v-model="registerForm.firstName" class="input" type="text" required placeholder="First Name">
+              <input v-model="registerForm.lastName" class="input" type="text" required placeholder="Last Name">
+              <input v-model="registerForm.username" class="input" type="text" required placeholder="Enter a username ">
+            </div>
+            <div class="field">
+              <input v-model="registerForm.email" class="input" type="text" required placeholder="Email">
+              <input v-model="registerForm.password" class="input" type="password" required placeholder="Password" minlength="6">
+              <input v-model="registerForm.address" class="input" type="text" required placeholder="Address" minlength="3">
+            </div>
 
-        <!-- form starts here -->
-        <section>
-          <div>
-            <label>Full Name</label>
-            <div>
-              <input v-model="form.name" class="input" type="text" placeholder="Enter your Full Name">
+            <div class="field">
+              <input v-model="registerForm.city" class="input" type="text"  required placeholder="City" minlength="6">
+              <input v-model="registerForm.state" class="input" type="text" required placeholder="State" >
+              <input v-model="registerForm.zipcode" class="input" type="text" required placeholder="Zip Code">
             </div>
-          </div>
-          <div>
-            <label>Username</label>
-            <div>
-              <input v-model="form.username" class="input" type="text" placeholder="Enter your Full Name">
-            </div>
-          </div>
-          <div>
-            <label>Password</label>
-            <div>
-              <input v-model="form.password" class="input" type="text" placeholder="Enter your Full Name">
-            </div>
-          </div>
-          <div>
-            <label>Email</label>
-            <div>
-              <input v-model="form.email" class="input" type="text" placeholder="Enter your Full Name">
-            </div>
-          </div>
-          <div>
-            <label>Address</label>
-            <div>
-              <input v-model="form.address" class="input" type="text" placeholder="Enter your Address">
-            </div>
-          </div>
-          <div>
-            <label>City</label>
-            <div>
-              <input v-model="form.city" class="input" type="text" placeholder="Enter your City">
-            </div>
-          </div>
-          <div>
-            <label>State</label>
-            <div>
-              <input v-model="form.state" class="input" type="text" placeholder="Enter your State">
-            </div>
-          </div>
-          <div>
-            <label>Zip Code</label>
-            <div>
-              <input v-model="form.zipcode" class="input" type="text" placeholder="Enter your Zip Code">
-            </div>
-          </div>
-          <div>
-            <label>Phone Number</label>
-            <div>
-              <input v-model="form.number" class="input" type="text" placeholder="Enter Phone Number">
-            </div>
-          </div>
-        </section>
-      </section>
-    </div>
-    <div>
-      <section>
-          <h2>Select Size</h2>
-          <div v-for="size in form.sizes">
-            <label for="size">{{size}}</label>
-            <input type="radio" id="size" v-model="form.sizePicked" v-bind:value="size"/>
-          </div>
-          <br>
-          <span>Size Picked: {{form.sizePicked }}</span>
 
-      </section>
-    </div>
-    <div>
-        <section id="results">
-          <div>
-            <ul>
-              <!-- loop through all the `form` properties and show their values -->
-              <li v-for="(item, k) in form">
-                <strong>{{ k }}:</strong> {{ item }}
-              </li>
-            </ul>
-          </div>
-        </section>
-    </div>
-    <div>
-      <h2>Set your Pickup Date</h2>
-      <h4> December </h4>
-      <div v-for="date in form.pickupDates">
-        <label for="pickupDate">{{date}}</label>
-          <input type="radio" id="pickupDate" v-model="form.pickupPicked" v-bind:value="date"/>
-      </div>
-      <br>
-      <span>Pickup Date Picked: December {{form.pickupPicked }}</span>
-    </div>
-    <div>
-      <h2>Set your Delivery Date</h2>
-      <h4> January </h4>
-      <div v-for="date in form.deliveryDates">
-        <label for="deliveryDate">{{date}}</label>
-        <input type="radio" id="deliveryDate" v-model="form.deliveryPicked" v-bind:value="date"/>
-      </div>
-      <br>
-      <span>Delivery Date Selected: January {{form.deliveryPicked }}</span>
+            <div class="field">
+              <input v-model="registerForm.number" class="input" type="text" required placeholder="Phone Number" minlength="3">
+            </div>
+          </form>
+        </div>
     </div>
   </div>
+
 </template>
 
 
-
-
 <script>
- export default {
-   data() {
-     return {
-       form: {
-         name: '',
-         username: '',
-         password: '',
-         address: '',
-         email: '',
-         city: '',
-         state: '',
-         zipcode: '',
-         number: '',
-         pickupDates: ["10th", "11th", "12th", "13th", "14th", "15th", "16th", "18th", "19th", "20th"],
-         deliveryDates: ["7th", "8th", "9th", "10th", "11th", "12th", "13th", "15th", "16th", "17th"],
-         pickupPicked: [],
-         deliveryPicked: [],
-         sizes: ["5'x5'", "5'x10'", "10'x15'", "10'x20'"],
-         sizePicked: ''
-       }
-     }
-   },
+  export default {
+    data() {
+      return {
+        registerForm: {
+          firstName: '',
+          lastName: '',
+          username: '',
+          password: '',
+          address: '',
+          email: '',
+          city: '',
+          state: '',
+          zipcode: '',
+          number: ''
+        },
+      }
 
-   methods() {
-     return {
-       /**
-        * function to check upon the user clicking 'Register' that all required fields are filled.
-        */
-       fieldValidator: function () {
-         for (field in form) {
-           if (!field) {
-             // input highlight the field in red and add 'Required' in text to the right of the input field.
-           }
-         }
-       }
-     }
-   }
- }
+
+      },
+    methods: {
+      //this.$http.post('/someUrl', [userBody], [options]).then(successCallback, errorCallback);
+    }
+
+
+
+  }
 </script>
+
+<style>
+  #splash{
+    background-color: #4992B7 ;
+    background-size: cover;
+    background-position: 100%;
+    flex: 2;
+    min-height: 750px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  #title-text{
+    color: white;
+    font-size: 0.3em;
+    text-align: center;
+  }
+  #subtitle-text{
+    color: white;
+    font-size: 0.19em;
+    text-align: center;
+    margin-top: 10px;
+  }
+  .splash-text{
+    position: relative;
+    padding-left: 20%;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+
+  #form-border{
+    background-color: #336680;
+    border-radius: 25px;
+    width: 8em;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    height: 70%;
+
+  }
+  #splash p{
+    margin: 0;
+    font-size: 0.16em;
+    text-align: center;
+  }
+  input[type=text]{
+    outline: none;
+    background: inherit;
+    border: none;
+    color: white;
+    border-bottom: 2px solid white;
+    width: 300px;
+    margin-top: 5px;
+    font-size: 0.16em;
+    margin-left: 5px;
+  }
+
+  input[type=text]::placeholder{
+    opacity: 0.5;
+    transition: all 0.2s linear;
+  }
+
+  input[type=text]:focus::placeholder, input[type=text]:hover::placeholder{
+    opacity: 1;
+  }
+  input[type=password]{
+    outline: none;
+    background: inherit;
+    border: none;
+    color: white;
+    border-bottom: 2px solid white;
+    width: 300px;
+    font-size: 0.16em;
+    margin-top: 10px;
+    margin-left: 5px;
+  }
+
+  input[type=password]::placeholder{
+    opacity: 0.5;
+    transition: all 0.2s linear;
+  }
+
+  input[type=password]:focus::placeholder, input[type=password]:hover::placeholder{
+    opacity: 1;
+  }
+
+</style>
