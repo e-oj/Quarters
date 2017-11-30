@@ -138,6 +138,10 @@
     flex: 1;
   }
 
+  #login button:focus{
+    outline: none;
+  }
+
   #login p{
     margin: 0;
     padding: 0;
