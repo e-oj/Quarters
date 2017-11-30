@@ -9,15 +9,17 @@
           <li><a href="/">About</a></li>
           <li><a href="/">Hosts</a></li>
           <li><a href="/">Rates</a></li>
-          <li><a href="/">Team</a></li>
+          <li v-if="!loggedIn"><a href="/">Team</a></li>
+          <li v-if="loggedIn"><a href="/">Your Stör</a></li>
           <li v-if="admin"><a href="/">Add Host</a></li>
         </ul>
         <div class="nav-action">
-          <a v-if="!loggedIn" href="">Sign Up</a>
           <a v-if="loggedIn" href="">Book Now</a>
-          <a class="login">Login</a>
+          <a v-else href="">Sign Up</a>
+          <a v-if="loggedIn" class="sign-out" @click="signOut">Sign Out</a>
+          <a v-else class="login" @click="displayLogin">Login</a>
         </div>
-        <login-form></login-form>
+        <login-form v-show="showLogin"></login-form>
       </div>
     </div>
   </div>
@@ -31,36 +33,40 @@
     data(){
       return {
         admin: false
-        , login: false
+        , showLogin: false
         , loggedIn: !!localStorage.getItem(config.AUTH)
       }
     }
     , methods: {
-      toggleLogin($loginButton, $loginForm){
+      signOut(){
         let self = this;
 
-        if(!self.login){
-          let top = $loginButton.position().top + $loginButton.height() + 5;
+        console.log("hey Thya");
 
+        localStorage.removeItem(config.AUTH);
+        self.loggedIn = false;
+        self.showLogin = false;
+      }
+
+      , displayLogin(){
+        const self = this;
+        let $loginButton = $(".nav-action .login");
+        let $loginForm;
+
+        if(!self.showLogin){
+          let top = $loginButton.position().top + $loginButton.height() + 5;
+          self.showLogin = true;
+          $loginForm = $("#login");
+
+          console.log("form", $loginForm);
           $loginForm.css({top});
-          $loginForm.removeClass("ghost");
-          self.login = true;
         }
         else{
-          $loginForm.addClass("ghost");
-          self.login = false;
+          self.showLogin = false;
         }
       }
     }
-    , mounted(){
-      const self = this;
-      let $loginButton = $(".nav-action .login");
-      let $loginForm = $("#login");
 
-      $loginButton.click(function(){
-        self.toggleLogin($loginButton, $loginForm);
-      });
-    }
     , components: {
       "login-form": Login
     }
