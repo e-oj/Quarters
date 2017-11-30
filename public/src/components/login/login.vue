@@ -1,5 +1,5 @@
 <template>
-  <div id="login" class="ghost">
+  <div id="login">
     <form>
       <div class="fields">
         <div>
@@ -54,11 +54,10 @@
       }
       , loggedIn(res){
         let self = this;
-        let $login = $("#login");
 
         localStorage.setItem(config.AUTH, res.body.result.token);
-        $login.addClass("ghost");
         self.$parent.loggedIn =  !!localStorage.getItem("auth");
+        self.$parent.showLogin = false;
       }
     }
   }
