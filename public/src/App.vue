@@ -82,10 +82,10 @@
   }
 
   .flex{
-    display: flex;
+    display: flex !important;
   }
 
   .ghost{
-    display: none;
+    display: none !important;
   }
 </style>
