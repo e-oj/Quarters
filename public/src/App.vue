@@ -34,16 +34,58 @@
 
   #app {
     height: 100%;
-    width: 100%;
     position: relative;
   }
 
   #content{
     height: 100%;
+    font-family: 'Open Sans', sans-serif;
   }
 
   .full{
-    width: 100%;
     height: 100%;
+  }
+
+  .bolder{
+    font-weight: 900;
+  }
+
+  .blue-text{
+    color: #6BCDFD;
+  }
+
+  .fredoka-font{
+    font-family: 'Fredoka One', cursive;
+  }
+
+  input::placeholder{
+    color: white;
+    opacity: 0.7;
+  }
+
+  .button{
+    min-width: 100px;
+    min-height: 35px;
+    background-color: transparent;
+    border: 2px solid white;
+    border-radius: 4px;
+    color: white;
+    transition: all 0.2s linear;
+    margin-left: 15px;
+    font-size: 0.8em;
+  }
+
+  .button:hover{
+    color: #4992B7;
+    background-color: white;
+    cursor: pointer;
+  }
+
+  .flex{
+    display: flex !important;
+  }
+
+  .ghost{
+    display: none !important;
   }
 </style>

@@ -5,6 +5,8 @@
 
 let moduleId = "users/user";
 
+let bcrypt = require("bcrypt");
+
 let response = require("../../../utils/response");
 let http = require("../../../utils/HttpStats");
 let User = require("../../models/User").User;
@@ -71,6 +73,33 @@ exports.createUser = async (req, res) => {
   }
   catch(err){
     respondErr(http.BAD_REQUEST, err.message, err);
+  }
+};
+
+exports.login = async (req, res) => {
+  let respond = response.success(res);
+  let respondErr = response.failure(res, moduleId);
+  let {alias, password} = req.body;
+  let errMsg = "Incorrect username or password";
+
+  try{
+    let user = await User.findOne({alias}).select("+password").exec();
+
+    console.log(user);
+
+    if(!user) return respondErr(http.BAD_REQUEST, errMsg);
+
+    let authorized = await bcrypt.compare(password, user.password);
+
+    if(!authorized) return respondErr(http.BAD_REQUEST, "Wrong pass");
+
+    let token = await auth.createToken(user);
+
+    respond(http.OK, "Logged In!", {token});
+  }
+  catch(err){
+    respondErr(http.SERVER_ERROR, err.message, err);
+    console.log(err);
   }
 };
 

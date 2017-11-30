@@ -116,6 +116,7 @@ exports.getHost = async function(req,res){
   let respond = response.success(res);
   let respondErr = response.failure(res,moduleId);
   let hostID = req.query["_id"];
+
   try{
     host = await Host.findOne({"_id": hostID});
     host = host.toObject();
@@ -123,6 +124,25 @@ exports.getHost = async function(req,res){
   }
   catch(err){
     respondErr(http.BAD_REQUEST,err.message,err);
+  }
+};
+
+exports.getHosts = async(req, res) => {
+  let respond = response.success(res);
+  let respondErr = response.failure(res, moduleId);
+  let limit = req.query["limit"];
+  let query;
+
+  limit = isNaN(limit) ? 0 : parseInt(limit);
+  query = limit ? Host.find().limit(limit) : Host.find();
+
+  try{
+    let hosts = await query.exec();
+
+    respond(http.OK, "Hosts found", {hosts});
+  }
+  catch(err){
+    respondErr(http.BAD_REQUEST, err.message, err)
   }
 };
 
