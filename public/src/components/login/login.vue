@@ -38,7 +38,6 @@
     , methods: {
       login: async function(){
         let self = this;
-        let $login = $("#login");
         let {alias, password} = self;
 
         try{
@@ -46,13 +45,20 @@
           let loginRoute = `${config.BASE_URL}/api/u/auth/`;
           let res = await self.$http.post(loginRoute, credentials);
 
-          localStorage.setItem("auth", res.body.result.token);
-          $login.addClass("ghost");
+          self.loggedIn(res);
         }
         catch(err){
           self.errMsg = "Invalid Credentials";
           console.log(err);
         }
+      }
+      , loggedIn(res){
+        let self = this;
+        let $login = $("#login");
+
+        localStorage.setItem(config.AUTH, res.body.result.token);
+        $login.addClass("ghost");
+        self.$parent.loggedIn =  !!localStorage.getItem("auth");
       }
     }
   }

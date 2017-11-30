@@ -13,7 +13,8 @@
           <li v-if="admin"><a href="/">Add Host</a></li>
         </ul>
         <div class="nav-action">
-          <a href="">Book Now</a>
+          <a v-if="!loggedIn" href="">Sign Up</a>
+          <a v-if="loggedIn" href="">Book Now</a>
           <a class="login">Login</a>
         </div>
         <login-form></login-form>
@@ -23,13 +24,15 @@
 </template>
 
 <script>
-  import Login from "../login/login.vue"
+  import Login from "../login/login.vue";
+  import config from "../../config";
 
   export default {
     data(){
       return {
         admin: false
         , login: false
+        , loggedIn: !!localStorage.getItem(config.AUTH)
       }
     }
     , methods: {
