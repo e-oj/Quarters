@@ -7,18 +7,58 @@
       <div id="nav-items">
         <ul>
           <li><a href="/">About</a></li>
-          <li><a href="">Hosts</a></li>
-          <li><a href="">Rates</a></li>
-          <li><a href="">Team</a></li>
+          <li><a href="/">Hosts</a></li>
+          <li><a href="/">Rates</a></li>
+          <li><a href="/">Team</a></li>
+          <li v-if="admin"><a href="/">Add Host</a></li>
         </ul>
-        <div class="nav-action"><a href="">Book Now</a></div>
+        <div class="nav-action">
+          <a href="">Book Now</a>
+          <a class="login">Login</a>
+        </div>
+        <login-form></login-form>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import Login from "../login/login.vue"
+
   export default {
+    data(){
+      return {
+        admin: false
+        , login: false
+      }
+    }
+    , methods: {
+      toggleLogin($nav, $loginButton, $loginForm){
+        let self = this;
+
+        if(!self.login){
+          let top = $loginButton.position().top + $loginButton.height() + 5;
+          $loginForm.css({
+            top
+            , display: "flex"
+            , opacity: 1
+          });
+        }
+      }
+    }
+    , mounted(){
+      const self = this;
+      let $nav = $("#nav");
+      let $loginButton = $(".nav-action .login");
+      let $loginForm = $("#login");
+
+      $loginButton.click(function(){
+        self.toggleLogin($nav, $loginButton, $loginForm);
+      });
+    }
+    , components: {
+      "login-form": Login
+    }
   }
 </script>
 
@@ -46,8 +86,9 @@
   }
 
   #nav-bar{
-    font-family: Lato, "Helvetica Neue", sans-serif;
-    font-size: 0.8em;
+    position: relative;
+    font-family: Nunito, Quicksand, sans-serif;
+    font-size: 0.08em;
     color: white;
     width: 60%;
     height: 80%;
@@ -56,12 +97,11 @@
     display: flex;
     align-items: center;
     align-content: center;
-    transition: all 2s linear;
   }
 
   #nav-bar .logo{
     margin-right: auto;
-    width: 30%;
+    width: 20%;
     min-width: 50px;
   }
 
@@ -109,11 +149,16 @@
   }
 
   .nav-action a{
-    outline: 3px solid white;
-    width: 100%;
-    padding: 10px;
+    border: 2px solid white;
+    border-radius: 50px;
+    padding: 5px 20px;
+    margin-right: 15px;
     color: white;
     transition: background 0.2s linear;
+  }
+
+  .nav-action a:last-child{
+    margin-right: 0;
   }
 
   .nav-action a:hover{
