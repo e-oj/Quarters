@@ -76,7 +76,7 @@ exports.createUser = async (req, res) => {
   }
 };
 
-exports.login = async (req, res) => {
+exports.showLogin = async (req, res) => {
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
   let {alias, password} = req.body;
