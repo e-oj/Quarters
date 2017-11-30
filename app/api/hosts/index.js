@@ -14,6 +14,7 @@ let upload = multer({ dest: 'uploads/' });
 hostRouter.post("/new", upload.single("image"),auth.checkToken, auth.checkAdmin,host.createHost);
 hostRouter.delete("/", auth.checkToken, auth.checkAdmin, host.deleteHost);
 hostRouter.put("/",upload.single("image"), auth.checkToken, auth.checkAdmin, host.editHost);
-hostRouter.get("/", auth.checkToken,auth.checkAdmin,host.getHost);
+hostRouter.get("/", host.getHost);
+hostRouter.get("/all", host.getHost);
 
 module.exports = hostRouter;

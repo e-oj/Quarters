@@ -14,19 +14,50 @@
         </ul>
         <div class="nav-action">
           <a href="">Book Now</a>
-          <a href="">Login</a>
+          <a class="login">Login</a>
         </div>
+        <login-form></login-form>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import Login from "../login/login.vue"
+
   export default {
     data(){
       return {
         admin: false
+        , login: false
       }
+    }
+    , methods: {
+      toggleLogin($nav, $loginButton, $loginForm){
+        let self = this;
+
+        if(!self.login){
+          let top = $loginButton.position().top + $loginButton.height() + 5;
+          $loginForm.css({
+            top
+            , display: "flex"
+            , opacity: 1
+          });
+        }
+      }
+    }
+    , mounted(){
+      const self = this;
+      let $nav = $("#nav");
+      let $loginButton = $(".nav-action .login");
+      let $loginForm = $("#login");
+
+      $loginButton.click(function(){
+        self.toggleLogin($nav, $loginButton, $loginForm);
+      });
+    }
+    , components: {
+      "login-form": Login
     }
   }
 </script>
@@ -55,6 +86,7 @@
   }
 
   #nav-bar{
+    position: relative;
     font-family: Nunito, Quicksand, sans-serif;
     font-size: 0.08em;
     color: white;
