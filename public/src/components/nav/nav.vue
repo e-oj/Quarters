@@ -13,7 +13,8 @@
           <li v-if="admin"><a href="/">Add Host</a></li>
         </ul>
         <div class="nav-action">
-          <a href="">Book Now</a>
+          <a v-if="!loggedIn" href="">Sign Up</a>
+          <a v-if="loggedIn" href="">Book Now</a>
           <a class="login">Login</a>
         </div>
         <login-form></login-form>
@@ -23,37 +24,41 @@
 </template>
 
 <script>
-  import Login from "../login/login.vue"
+  import Login from "../login/login.vue";
+  import config from "../../config";
 
   export default {
     data(){
       return {
         admin: false
         , login: false
+        , loggedIn: !!localStorage.getItem(config.AUTH)
       }
     }
     , methods: {
-      toggleLogin($nav, $loginButton, $loginForm){
+      toggleLogin($loginButton, $loginForm){
         let self = this;
 
         if(!self.login){
           let top = $loginButton.position().top + $loginButton.height() + 5;
-          $loginForm.css({
-            top
-            , display: "flex"
-            , opacity: 1
-          });
+
+          $loginForm.css({top});
+          $loginForm.removeClass("ghost");
+          self.login = true;
+        }
+        else{
+          $loginForm.addClass("ghost");
+          self.login = false;
         }
       }
     }
     , mounted(){
       const self = this;
-      let $nav = $("#nav");
       let $loginButton = $(".nav-action .login");
       let $loginForm = $("#login");
 
       $loginButton.click(function(){
-        self.toggleLogin($nav, $loginButton, $loginForm);
+        self.toggleLogin($loginButton, $loginForm);
       });
     }
     , components: {
@@ -162,6 +167,7 @@
   }
 
   .nav-action a:hover{
+    cursor: pointer;
     background: white;
     color: #4992B7;
   }

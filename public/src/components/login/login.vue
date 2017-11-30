@@ -1,5 +1,5 @@
 <template>
-  <div id="login">
+  <div id="login" class="ghost">
     <form>
       <div class="fields">
         <div>
@@ -14,13 +14,16 @@
       </div>
 
       <button @click="login" class="button">Login</button>
+
+      <p v-if="errMsg">{{errMsg}}</p>
     </form>
   </div>
 </template>
 
 <script>
   import Vue from "vue"
-  import VueResource from "vue-resource"
+  import VueResource from "vue-resource";
+  import config from "../../config";
 
   Vue.use(VueResource);
 
@@ -29,6 +32,7 @@
       return {
         alias: ""
         , password: ""
+        , errMsg: ""
       }
     }
     , methods: {
@@ -37,16 +41,24 @@
         let {alias, password} = self;
 
         try{
-          let res = await self.$http.post("http://localhost:8345/api/u/auth/", {
-            alias, password
-          });
+          let credentials = {alias, password};
+          let loginRoute = `${config.BASE_URL}/api/u/auth/`;
+          let res = await self.$http.post(loginRoute, credentials);
 
-          console.log("Access token: ", res.body.result.token);
-          alert("logged in!!!");
+          self.loggedIn(res);
         }
         catch(err){
+          self.errMsg = "Invalid Credentials";
           console.log(err);
         }
+      }
+      , loggedIn(res){
+        let self = this;
+        let $login = $("#login");
+
+        localStorage.setItem(config.AUTH, res.body.result.token);
+        $login.addClass("ghost");
+        self.$parent.loggedIn =  !!localStorage.getItem("auth");
       }
     }
   }
@@ -59,8 +71,7 @@
     width: 300px;
     height: 230px;
     background-color: #35667F;
-    display: none;
-    opacity: 0;
+    display: flex;
     transition: opacity 0.2s linear;
     flex-direction: column;
   }
@@ -126,5 +137,10 @@
     margin: 0;
     padding: 0;
     flex: 1;
+  }
+
+  #login p{
+    margin: 0;
+    padding: 0;
   }
 </style>
