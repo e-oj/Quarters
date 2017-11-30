@@ -10,7 +10,7 @@ let auth = require("../../../utils/authToken");
 
 let userRouter = express.Router();
 
-userRouter.post("/auth", users.login);
+userRouter.post("/auth", users.showLogin);
 
 userRouter.route("/")
   .post(users.createUser)
