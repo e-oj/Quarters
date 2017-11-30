@@ -13,20 +13,56 @@
           <li v-if="admin"><a href="/">Add Host</a></li>
         </ul>
         <div class="nav-action">
-          <a href="">Book Now</a>
-          <a href="">Login</a>
+          <a v-if="!loggedIn" href="">Sign Up</a>
+          <a v-if="loggedIn" href="">Book Now</a>
+          <a class="login">Login</a>
         </div>
+        <login-form></login-form>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import Login from "../login/login.vue";
+  import config from "../../config";
+
   export default {
     data(){
       return {
         admin: false
+        , login: false
+        , loggedIn: !!localStorage.getItem(config.AUTH)
       }
+    }
+    , methods: {
+      toggleLogin($loginButton, $loginForm){
+        let self = this;
+
+        if(!self.login){
+          let top = $loginButton.position().top + $loginButton.height() + 5;
+
+          $loginForm.css({top});
+          $loginForm.removeClass("ghost");
+          self.login = true;
+        }
+        else{
+          $loginForm.addClass("ghost");
+          self.login = false;
+        }
+      }
+    }
+    , mounted(){
+      const self = this;
+      let $loginButton = $(".nav-action .login");
+      let $loginForm = $("#login");
+
+      $loginButton.click(function(){
+        self.toggleLogin($loginButton, $loginForm);
+      });
+    }
+    , components: {
+      "login-form": Login
     }
   }
 </script>
@@ -55,6 +91,7 @@
   }
 
   #nav-bar{
+    position: relative;
     font-family: Nunito, Quicksand, sans-serif;
     font-size: 0.08em;
     color: white;
@@ -130,6 +167,7 @@
   }
 
   .nav-action a:hover{
+    cursor: pointer;
     background: white;
     color: #4992B7;
   }

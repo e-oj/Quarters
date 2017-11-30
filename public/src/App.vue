@@ -80,4 +80,12 @@
     background-color: white;
     cursor: pointer;
   }
+
+  .flex{
+    display: flex !important;
+  }
+
+  .ghost{
+    display: none !important;
+  }
 </style>
