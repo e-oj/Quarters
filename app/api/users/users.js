@@ -32,7 +32,7 @@ exports.getUser = async (req, res) => {
     respond(http.OK, "User Not Found");
   }
   catch(err){
-    respondErr(http.SERVER_ERROR, err.message, err)
+    respondErr(http.SERVER_ERROR, err.message, err);
   }
 };
 
@@ -52,7 +52,7 @@ exports.createUser = async (req, res) => {
     "alias", "email", "password", "first_name", "last_name", "phone", "address"
   ];
 
-  for(prop of props){
+  for(let prop of props){
     user[prop] = req.body[prop];
   }
 
@@ -76,26 +76,38 @@ exports.createUser = async (req, res) => {
   }
 };
 
-exports.showLogin = async (req, res) => {
+/**
+ * Login route handler
+ *
+ * @param req
+ * @param res
+ *
+ * @returns {Promise.<*>}
+ */
+exports.login = async (req, res) => {
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
   let {alias, password} = req.body;
-  let errMsg = "Incorrect username or password";
 
   try{
     let user = await User.findOne({alias}).select("+password").exec();
 
-    console.log(user);
-
-    if(!user) return respondErr(http.BAD_REQUEST, errMsg);
+    if(!user){
+      return respondErr(http.BAD_REQUEST, "Incorrect Username");
+    }
 
     let authorized = await bcrypt.compare(password, user.password);
 
-    if(!authorized) return respondErr(http.BAD_REQUEST, "Wrong pass");
+    if(!authorized){
+      return respondErr(http.BAD_REQUEST, "Incorrect Password");
+    }
 
     let token = await auth.createToken(user);
 
-    respond(http.OK, "Logged In!", {token});
+    delete user.password;
+
+    respond(http.OK, "Logged In!", {token, user});
+    console.log("got request: ", token);
   }
   catch(err){
     respondErr(http.SERVER_ERROR, err.message, err);

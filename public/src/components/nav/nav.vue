@@ -11,7 +11,6 @@
           <li><a href="/">Rates</a></li>
           <li v-if="!loggedIn"><a href="/">Team</a></li>
           <li v-if="loggedIn"><a href="/">Your Stör</a></li>
-          <li v-if="admin"><a href="/">Add Host</a></li>
         </ul>
         <div class="nav-action">
           <a v-if="loggedIn" href="">Book Now</a>
@@ -32,8 +31,7 @@
   export default {
     data(){
       return {
-        admin: false
-        , showLogin: false
+        showLogin: false
         , loggedIn: !!localStorage.getItem(config.AUTH)
       }
     }
@@ -44,6 +42,7 @@
         console.log("hey Thya");
 
         localStorage.removeItem(config.AUTH);
+        localStorage.removeItem(config.ADMIN);
         self.loggedIn = false;
         self.showLogin = false;
       }

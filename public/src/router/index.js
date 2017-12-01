@@ -3,14 +3,18 @@
  * @since 11/25/17
  */
 
-import Vue from "vue"
+import Vue from "vue";
 import Router from "vue-router";
-import Home from "../components/home/home.vue"
+
+import Home from "../components/home/home.vue";
+import Admin from "../components/admin/admin.vue";
 
 Vue.use(Router);
 
 export default new Router({
-  routes: [
+  mode: "history"
+  , routes: [
     {path: "/", component: Home}
+    , {path: "/admin", component: Admin}
   ]
 });
