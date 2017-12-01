@@ -26,7 +26,7 @@
                   <input id="alias" v-model="registerForm.alias" class="input" type="text" required placeholder="Username">
 
                   <label for="password"></label>
-                  <input id="password" v-model="registerForm.password" class="input" type="text" required placeholder="Password">
+                  <input id="password" v-model="registerForm.password" class="input" type="password" required placeholder="Password">
                 </div>
                 <div>
                   <label for="address"></label>
@@ -45,7 +45,6 @@
 
                 <button @click="signup" class="button">Sign Up</button>
 
-                <p v-if="errMsg">{{errMsg}}</p>
             </form>
           </div>
         </div>
@@ -87,21 +86,27 @@
         try{
           let user = {alias,first_name,last_name,address,phone,password};
           let signupRoute = `${config.BASE_URL}/api/u/`;
-          let res = await self.$http.post(signupRoute, user);
 
-          self.loggedIn(res);
+          console.log("I'm about to send response");
+          let res = await self.$http.post(signupRoute, user,{
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+
+          console.log(res);
         }
         catch(err){
-          console.log(err.msg);
+          console.log(err);
         }
       }
     }
-    ,mounted(){
-      $nav.css({
-        top: 0
-        , position: fixed
-      })
-    }
+   // ,mounted(){
+      //$nav.css({
+        //top: 0
+        //, position: fixed
+      //})
+    //}
   }
 </script>
 
