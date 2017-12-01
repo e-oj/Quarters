@@ -4,82 +4,114 @@
 
 
 <template>
-  <div id="container" class="full vertical-container">
-    <div id="splash">
+    <div id="register">
       <div id="title-text">Sign Up</div>
       <div id="subtitle-text">Enter in all your information to create your <strong>stör</strong> account.</div>
 
           <hr>
           <!-- form starts here -->
-        <div id="form-border">
-          <form>
-            <div class="field">
-              <input v-model="registerForm.firstName" class="input" type="text" required placeholder="First Name">
-              <input v-model="registerForm.lastName" class="input" type="text" required placeholder="Last Name">
-              <input v-model="registerForm.username" class="input" type="text" required placeholder="Enter a username ">
-            </div>
-            <div class="field">
-              <input v-model="registerForm.email" class="input" type="text" required placeholder="Email">
-              <input v-model="registerForm.password" class="input" type="password" required placeholder="Password" minlength="6">
-              <input v-model="registerForm.address" class="input" type="text" required placeholder="Address" minlength="3">
-            </div>
+        <div id="body-border">
+          <div id="form-border">
+            <form>
 
-            <div class="field">
-              <input v-model="registerForm.city" class="input" type="text"  required placeholder="City" minlength="6">
-              <input v-model="registerForm.state" class="input" type="text" required placeholder="State" >
-              <input v-model="registerForm.zipcode" class="input" type="text" required placeholder="Zip Code">
-            </div>
+                <div>
+                  <label for="first-name"></label>
+                  <input id="first-name" v-model="registerForm.first_name" class="input" type="text" required placeholder="First Name">
 
-            <div class="field">
-              <input v-model="registerForm.number" class="input" type="text" required placeholder="Phone Number" minlength="3">
-            </div>
-          </form>
+                  <label for="last-name"></label>
+                  <input id="last-name" v-model="registerForm.last_name" class="input" type="text" required placeholder="Last Name">
+                </div>
+                <div>
+                  <label for="alias"></label>
+                  <input id="alias" v-model="registerForm.alias" class="input" type="text" required placeholder="Username">
+
+                  <label for="password"></label>
+                  <input id="password" v-model="registerForm.password" class="input" type="text" required placeholder="Password">
+                </div>
+                <div>
+                  <label for="address"></label>
+                  <input id="address" v-model="registerForm.address" class="input" type="text" required placeholder="Address">
+
+                  <label for="city"></label>
+                  <input id="city" v-model="registerForm.city" class="input" type="text" required placeholder="City">
+                </div>
+
+                <div>
+                  <label for="state"></label>
+                  <input id="state" v-model="registerForm.state" class="input" type="text" required placeholder="State">
+                  <label for="phone"></label>
+                  <input id="phone" v-model="registerForm.phone" class="input" type="text" required placeholder="Phone">
+                </div>
+
+                <button @click="signup" class="button">Sign Up</button>
+
+                <p v-if="errMsg">{{errMsg}}</p>
+            </form>
+          </div>
         </div>
     </div>
-  </div>
-
 </template>
 
 
 <script>
+  import Vue from "vue"
+  import VueResource from "vue-resource";
+  import config from "../../config";
+
+  Vue.use(VueResource);
+
   export default {
     data() {
       return {
         registerForm: {
-          firstName: '',
-          lastName: '',
-          username: '',
+          first_name: '',
+          last_name: '',
+          alias: '',
           password: '',
           address: '',
           email: '',
           city: '',
           state: '',
           zipcode: '',
-          number: ''
+          phone: ''
         },
       }
 
 
       },
     methods: {
-      //this.$http.post('/someUrl', [userBody], [options]).then(successCallback, errorCallback);
+      signup: async function(){
+        let self = this;
+        let {alias,first_name,last_name,address,phone, password} = self;
+
+        try{
+          let user = {alias,first_name,last_name,address,phone,password};
+          let signupRoute = `${config.BASE_URL}/api/u/`;
+          let res = await self.$http.post(signupRoute, user);
+
+          self.loggedIn(res);
+        }
+        catch(err){
+          console.log(err.msg);
+        }
+      }
     }
-
-
-
+    ,mounted(){
+      $nav.css({
+        top: 0
+        , position: fixed
+      })
+    }
   }
 </script>
 
 <style>
-  #splash{
+  #register{
     background-color: #4992B7 ;
-    background-size: cover;
-    background-position: 100%;
-    flex: 2;
-    min-height: 750px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    align-content: center;
   }
   #title-text{
     color: white;
@@ -92,69 +124,57 @@
     text-align: center;
     margin-top: 10px;
   }
-  .splash-text{
-    position: relative;
-    padding-left: 20%;
-    color: white;
+
+  #body-border{
     display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+
   }
 
   #form-border{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
     background-color: #336680;
     border-radius: 25px;
-    width: 8em;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 20px;
-    height: 70%;
+    width: 60%;
+    padding: auto;
 
+  }
+  #form-border button{
+    font-size: 0.1em;
   }
   #splash p{
     margin: 0;
     font-size: 0.16em;
     text-align: center;
   }
-  input[type=text]{
+  input{
     outline: none;
     background: inherit;
     border: none;
     color: white;
     border-bottom: 2px solid white;
-    width: 300px;
-    margin-top: 5px;
-    font-size: 0.16em;
+    font-size: 0.15em;
     margin-left: 5px;
+    margin-right: 5px;
+    width:auto
+  }
+  form{
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
   }
 
-  input[type=text]::placeholder{
+  input::placeholder{
     opacity: 0.5;
     transition: all 0.2s linear;
   }
 
-  input[type=text]:focus::placeholder, input[type=text]:hover::placeholder{
+  input:focus::placeholder, input:hover::placeholder{
     opacity: 1;
   }
-  input[type=password]{
-    outline: none;
-    background: inherit;
-    border: none;
-    color: white;
-    border-bottom: 2px solid white;
-    width: 300px;
-    font-size: 0.16em;
-    margin-top: 10px;
-    margin-left: 5px;
-  }
-
-  input[type=password]::placeholder{
-    opacity: 0.5;
-    transition: all 0.2s linear;
-  }
-
-  input[type=password]:focus::placeholder, input[type=password]:hover::placeholder{
-    opacity: 1;
-  }
-
 </style>
