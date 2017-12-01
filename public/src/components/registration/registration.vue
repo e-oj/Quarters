@@ -16,31 +16,31 @@
 
                 <div>
                   <label for="first-name"></label>
-                  <input id="first-name" v-model="registerForm.first_name" class="input" type="text" required placeholder="First Name">
+                  <input id="first-name" v-model="first_name" class="input" type="text" required placeholder="First Name">
 
                   <label for="last-name"></label>
-                  <input id="last-name" v-model="registerForm.last_name" class="input" type="text" required placeholder="Last Name">
+                  <input id="last-name" v-model="last_name" class="input" type="text" required placeholder="Last Name">
                 </div>
                 <div>
                   <label for="alias"></label>
-                  <input id="alias" v-model="registerForm.alias" class="input" type="text" required placeholder="Username">
+                  <input id="alias" v-model="alias" class="input" type="text" required placeholder="Username">
 
                   <label for="password"></label>
-                  <input id="password" v-model="registerForm.password" class="input" type="password" required placeholder="Password">
+                  <input id="password" v-model="password" class="input" type="password" required placeholder="Password">
                 </div>
                 <div>
+                  <label for="email"></label>
+                  <input id="email" v-model="email" class="input" type="email" required placeholder="Email">
+
                   <label for="address"></label>
-                  <input id="address" v-model="registerForm.address" class="input" type="text" required placeholder="Address">
-
-                  <label for="city"></label>
-                  <input id="city" v-model="registerForm.city" class="input" type="text" required placeholder="City">
+                  <input id="address" v-model="address" class="input" type="text" required placeholder="Address">
                 </div>
 
                 <div>
-                  <label for="state"></label>
-                  <input id="state" v-model="registerForm.state" class="input" type="text" required placeholder="State">
+                  <label for="city"></label>
+                  <input id="city" v-model="city" class="input" type="text" required placeholder="City">
                   <label for="phone"></label>
-                  <input id="phone" v-model="registerForm.phone" class="input" type="text" required placeholder="Phone">
+                  <input id="phone" v-model="phone" class="input" type="text" required placeholder="Phone">
                 </div>
 
                 <button @click="signup" class="button">Sign Up</button>
@@ -62,7 +62,6 @@
   export default {
     data() {
       return {
-        registerForm: {
           first_name: '',
           last_name: '',
           alias: '',
@@ -71,9 +70,7 @@
           email: '',
           city: '',
           state: '',
-          zipcode: '',
           phone: ''
-        },
       }
 
 
@@ -81,13 +78,11 @@
     methods: {
       signup: async function(){
         let self = this;
-        let {alias,first_name,last_name,address,phone, password} = self;
+        let {alias, email,first_name,last_name,address,phone, password} = self;
 
         try{
-          let user = {alias,first_name,last_name,address,phone,password};
+          let user = {alias,first_name,last_name,address,phone,password,email};
           let signupRoute = `${config.BASE_URL}/api/u/`;
-
-          console.log("I'm about to send response");
           let res = await self.$http.post(signupRoute, user,{
             headers: {
               'Content-Type': 'application/json'
@@ -142,7 +137,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-content: center;
+    align-content: center;2
     background-color: #336680;
     border-radius: 25px;
     width: 60%;
