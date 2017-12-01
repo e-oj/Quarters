@@ -5,50 +5,54 @@
 
 <template>
     <div id="register">
-      <div id="title-text">Sign Up</div>
-      <div id="subtitle-text">Enter in all your information to create your <strong>stör</strong> account.</div>
-
-          <hr>
           <!-- form starts here -->
-        <div id="body-border">
           <div id="form-border">
-            <form>
+            <form id="reg-form">
+               <div id="reg-form-inputs">
+                  <div>
+                    <label for="first-name"></label>
+                    <input id="first-name" v-model="first_name" class="input" type="text" required placeholder="First Name">
+                  </div>
+                  <div>
+                    <label for="last-name"></label>
+                    <input id="last-name" v-model="last_name" class="input" type="text" required placeholder="Last Name">
+                  </div>
+                  <div>
+                    <label for="alias"></label>
+                    <input id="alias" v-model="alias" class="input" type="text" required placeholder="Username">
+                  </div>
+                  <div>
+                    <label for="password"></label>
+                    <input id="password" v-model="password" class="input" type="password" required placeholder="Password">
+                  </div>
+                  <div>
+                    <label for="email"></label>
+                    <input id="email" v-model="email" class="input" type="email" required placeholder="Email">
+                  </div>
+                  <div>
+                    <label for="address"></label>
+                    <input id="address" v-model="address" class="input" type="text" required placeholder="Address">
+                  </div>
 
-                <div>
-                  <label for="first-name"></label>
-                  <input id="first-name" v-model="first_name" class="input" type="text" required placeholder="First Name">
+                  <div>
+                    <label for="city"></label>
+                    <input id="city" v-model="city" class="input" type="text" required placeholder="City">
+                  </div>
+                  <div>
+                    <label for="phone"></label>
+                    <input id="phone" v-model="phone" class="input" type="tel" required placeholder="Phone">
+                  </div>
+                  <div>
+                    <label for="state"></label>
+                    <input id="state" v-model="state" class="input" type="text" required placeholder="State">
+                  </div>
+               </div>
 
-                  <label for="last-name"></label>
-                  <input id="last-name" v-model="last_name" class="input" type="text" required placeholder="Last Name">
-                </div>
-                <div>
-                  <label for="alias"></label>
-                  <input id="alias" v-model="alias" class="input" type="text" required placeholder="Username">
-
-                  <label for="password"></label>
-                  <input id="password" v-model="password" class="input" type="password" required placeholder="Password">
-                </div>
-                <div>
-                  <label for="email"></label>
-                  <input id="email" v-model="email" class="input" type="email" required placeholder="Email">
-
-                  <label for="address"></label>
-                  <input id="address" v-model="address" class="input" type="text" required placeholder="Address">
-                </div>
-
-                <div>
-                  <label for="city"></label>
-                  <input id="city" v-model="city" class="input" type="text" required placeholder="City">
-                  <label for="phone"></label>
-                  <input id="phone" v-model="phone" class="input" type="text" required placeholder="Phone">
-                </div>
-
-                <button @click="signup" class="button">Sign Up</button>
+                  <button @click="signup" class="button">Sign Up</button>
 
             </form>
           </div>
         </div>
-    </div>
 </template>
 
 
@@ -95,57 +99,60 @@
           console.log(err);
         }
       }
+    },
+    mounted(){
+      let self = this;
+      let $nav = $("#nav");
+      let $window = $(window);
+      let $register = $("#register");
+
+      self.$nextTick(function () {
+        $window.off("scroll");
+      });
+
+      $nav.css({transition: "none"});
+      $nav.addClass("sticky-nav");
+
+      $register.css({
+        top: $nav.height()
+      });
     }
-   // ,mounted(){
-      //$nav.css({
-        //top: 0
-        //, position: fixed
-      //})
-    //}
   }
 </script>
 
 <style>
   #register{
-    background-color: #4992B7 ;
+    background-color: white ;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     align-content: center;
+    position: relative;
+    padding-bottom: 35px;
   }
-  #title-text{
-    color: white;
-    font-size: 0.3em;
-    text-align: center;
-  }
-  #subtitle-text{
-    color: white;
-    font-size: 0.19em;
-    text-align: center;
-    margin-top: 10px;
-  }
-
-  #body-border{
-    display: flex;
+  #reg-form-inputs{
+    display:flex;
     flex-direction: row;
-    justify-content: center;
-    align-content: center;
-
+    width: inherit;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
   }
 
   #form-border{
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    align-content: center;2
     background-color: #336680;
-    border-radius: 25px;
-    width: 60%;
-    padding: auto;
-
+    border-radius: 0;
+    min-width: 500px;
+    margin: auto;
+    margin-bottom: 20px;
+    margin-top:15px;
   }
+
   #form-border button{
-    font-size: 0.1em;
+    font-size: 0.11em;
+    width: 60px;
+    border-radius: 0;
   }
   #splash p{
     margin: 0;
@@ -158,15 +165,18 @@
     border: none;
     color: white;
     border-bottom: 2px solid white;
-    font-size: 0.15em;
+    font-size: 0.11em;
     margin-left: 5px;
     margin-right: 5px;
     width:auto
   }
-  form{
-    flex-direction: row;
-    justify-content: center;
-    align-content: center;
+  #reg-form{
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    display: flex;
+    width: 700px;
+    padding: 20px;
   }
 
   input::placeholder{

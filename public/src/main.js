@@ -58,13 +58,11 @@ new Vue({
       fontSize: (window.screen.availWidth * FONT_RATIO) + "px"
     });
 
-    self.$nextTick(function(){
-      $window = $(window);
-      $nav = $("#nav");
+    $window = $(window);
+    $nav = $("#nav");
 
-      $window.on("scroll", function(){
-        self.actSticky();
-      });
+    $window.on("scroll", function(){
+      self.actSticky();
     });
   }
   , router
