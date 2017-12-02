@@ -8,13 +8,21 @@ let express = require("express");
 let auth = require("../../../utils/authToken");
 let host = require("./hosts");
 let hostRouter = express.Router();
-let multer  = require('multer');
-let upload = multer({ dest: 'uploads/' });
+let multer  = require("multer");
+let upload = multer({ dest: "uploads/" });
 
-hostRouter.post("/new", upload.single("image"),auth.checkToken, auth.checkAdmin,host.createHost);
-hostRouter.delete("/", auth.checkToken, auth.checkAdmin, host.deleteHost);
-hostRouter.put("/",upload.single("image"), auth.checkToken, auth.checkAdmin, host.editHost);
+let uploads = upload.fields([
+  {name: "profile_image", maxCount: 1}
+  , {name: "storage_image", maxCount: 1}
+]);
+
+let authenticate = [auth.checkToken, auth.checkAdmin];
+
+hostRouter.post("/new", authenticate, uploads, host.createHost);
+hostRouter.delete("/", authenticate, host.deleteHost);
+hostRouter.put("/", authenticate, uploads, host.editHost);
+
 hostRouter.get("/", host.getHost);
-hostRouter.get("/all", host.getHost);
+hostRouter.get("/all", host.getHosts);
 
 module.exports = hostRouter;

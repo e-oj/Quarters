@@ -1,6 +1,6 @@
 <template>
   <div id="login">
-    <form>
+    <form @submit.prevent="login" >
       <div class="fields">
         <div>
           <label for="login-username"></label>
@@ -13,7 +13,7 @@
         </div>
       </div>
 
-      <button @click="login" class="button">Login</button>
+      <button type="submit" class="button">Login</button>
 
       <p v-if="errMsg">{{errMsg}}</p>
     </form>
@@ -45,6 +45,8 @@
           let loginRoute = `${config.BASE_URL}/api/u/auth/`;
           let res = await self.$http.post(loginRoute, credentials);
 
+          console.log(res);
+
           self.loggedIn(res);
         }
         catch(err){
@@ -54,8 +56,11 @@
       }
       , loggedIn(res){
         let self = this;
+        let {token, user} = res.body.result;
 
-        localStorage.setItem(config.AUTH, res.body.result.token);
+        localStorage.setItem(config.AUTH, token);
+        localStorage.setItem(config.ADMIN, user.admin);
+
         self.$parent.loggedIn =  !!localStorage.getItem("auth");
         self.$parent.showLogin = false;
       }

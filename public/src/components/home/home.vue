@@ -35,7 +35,8 @@
   export default {
     data(){
       return{
-        how: [
+        stickyNav: false
+        , how: [
           {
             description: "Select a size option and host provider. " +
               "Schedule a pick up and delivery dates"

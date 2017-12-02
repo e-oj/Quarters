@@ -68,7 +68,7 @@
     min-height: 35px;
     background-color: transparent;
     border: 2px solid white;
-    border-radius: 4px;
+    border-radius: 0;
     color: white;
     transition: all 0.2s linear;
     margin-left: 15px;
