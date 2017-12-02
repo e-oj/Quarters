@@ -1,7 +1,9 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import VueResource from 'vue-resource'
+/* eslint-disable no-undef */
+
+import Vue from "vue";
+import App from "./App.vue";
+import router from "./router";
+import VueResource from "vue-resource";
 
 Vue.use(VueResource);
 
@@ -9,11 +11,11 @@ let $window;
 let $nav;
 
 new Vue({
-  el: '#app'
+  el: "#app"
   , data: {
     stickyNav: false
   }
-  , template: '<App/>'
+  , template: "<App/>"
   , components: {App}
   , methods: {
 

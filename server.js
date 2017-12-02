@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 /**
  * @author EmmanuelOlaojo
  * @since 11/22/17
@@ -30,7 +32,7 @@ app.use(cors());
 
 app.use("/api", ApiRouter);
 
-app.get("/", (req, res) => {
+app.use("*", (req, res) => {
   res.sendFile(`${STATIC}/index.html`);
 });
 
