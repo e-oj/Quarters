@@ -15,7 +15,7 @@
         </ul>
         <div class="nav-action">
           <a v-if="loggedIn" href="">Book Now</a>
-          <a v-else href="">Sign Up</a>
+          <router-link v-else to="/register">Sign Up</router-link>
           <a v-if="loggedIn" class="sign-out" @click="signOut">Sign Out</a>
           <a v-else class="login" @click="displayLogin">Login</a>
         </div>

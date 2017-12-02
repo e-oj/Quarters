@@ -25,6 +25,8 @@ exports.createItem = async function(req, res){
   item["name"] = req.body["name"];
   item["size"] = req.body["size"];
   item["userID"] = ownerID;
+  item["pickup"] = req.body["pickup"];
+  item["delivery"] = req.body["delivery"];
 
   try{
     item = await item.save();
