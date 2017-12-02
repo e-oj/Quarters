@@ -11,7 +11,7 @@
       </div>
       <div>
         <label for="add-host-image">Select an image</label>
-        <input id="add-host-image" />
+        <input id="add-host-image" type="file"/>
       </div>
     </form>
   </div>

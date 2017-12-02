@@ -7,7 +7,7 @@
     <div id="register">
           <!-- form starts here -->
           <div id="form-border">
-            <form id="reg-form">
+            <form id="reg-form" @submit.prevent="signup">
                <div id="reg-form-inputs">
                   <div>
                     <label for="first-name"></label>
@@ -48,7 +48,7 @@
                   </div>
                </div>
 
-                  <button @click="signup" class="button">Sign Up</button>
+              <button type="submit" class="button">Sign Up</button>
 
             </form>
           </div>
