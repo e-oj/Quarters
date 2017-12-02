@@ -160,7 +160,6 @@
 
   .nav-action a{
     border: 2px solid white;
-    border-radius: 50px;
     padding: 5px 20px;
     margin-right: 15px;
     color: white;

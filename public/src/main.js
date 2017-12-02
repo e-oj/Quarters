@@ -1,16 +1,18 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
+/* eslint-disable no-undef */
+
+import Vue from "vue";
+import App from "./App.vue";
+import router from "./router";
 
 let $window;
 let $nav;
 
 new Vue({
-  el: '#app'
+  el: "#app"
   , data: {
     stickyNav: false
   }
-  , template: '<App/>'
+  , template: "<App/>"
   , components: {App}
   , methods: {
 
@@ -55,13 +57,11 @@ new Vue({
       fontSize: (window.screen.availWidth * FONT_RATIO) + "px"
     });
 
-    self.$nextTick(function(){
-      $window = $(window);
-      $nav = $("#nav");
+    $window = $(window);
+    $nav = $("#nav");
 
-      $window.on("scroll", function(){
-        self.actSticky();
-      });
+    $window.on("scroll", function(){
+      self.actSticky();
     });
   }
   , router
