@@ -11,6 +11,7 @@ let logger = require("morgan");
 let bodyParser = require("body-parser");
 let mongoose = require("mongoose");
 let bluebird = require("bluebird");
+let cors = require("cors");
 
 mongoose.Promise = global.Promise = bluebird;
 
@@ -27,6 +28,7 @@ app.use(express.static(STATIC));
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cors());
 
 app.use("/api", ApiRouter);
 
