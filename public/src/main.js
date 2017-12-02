@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+import VueResource from 'vue-resource'
+
+Vue.use(VueResource);
 
 let $window;
 let $nav;
@@ -55,13 +58,11 @@ new Vue({
       fontSize: (window.screen.availWidth * FONT_RATIO) + "px"
     });
 
-    self.$nextTick(function(){
-      $window = $(window);
-      $nav = $("#nav");
+    $window = $(window);
+    $nav = $("#nav");
 
-      $window.on("scroll", function(){
-        self.actSticky();
-      });
+    $window.on("scroll", function(){
+      self.actSticky();
     });
   }
   , router
