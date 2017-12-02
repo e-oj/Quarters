@@ -20,7 +20,6 @@ let authenticate = [auth.checkToken, auth.checkAdmin];
 
 hostRouter.post("/new", authenticate, uploads, host.createHost);
 hostRouter.delete("/", authenticate, host.deleteHost);
-hostRouter.put("/", authenticate, uploads, host.editHost);
 
 hostRouter.get("/", host.getHost);
 hostRouter.get("/all", host.getHosts);
