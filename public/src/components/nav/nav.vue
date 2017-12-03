@@ -2,7 +2,7 @@
   <div id="nav" class="reg-nav">
     <div id="nav-bar">
       <div class="logo">
-        <a href="/"><img src="/src/assets/logo.png"/></a>
+        <a href="/"><img src="/src/assets/icons/logo.png"/></a>
       </div>
       <div id="nav-items">
         <ul>
@@ -160,6 +160,7 @@
 
   .nav-action a{
     border: 2px solid white;
+    border-radius: 15px;
     padding: 5px 20px;
     margin-right: 15px;
     color: white;

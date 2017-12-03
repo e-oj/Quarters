@@ -9,8 +9,8 @@ import Router from "vue-router";
 import Home from "../components/home/home.vue";
 import Admin from "../components/admin/admin.vue";
 import AdminHost from "../components/admin/add.hosts.vue";
-import Registration from "../components/registration/registration.vue"
-import Booking from "../components/booking/booking.vue"
+import Registration from "../components/registration/registration.vue";
+import Booking from "../components/booking/booking.vue";
 
 Vue.use(Router);
 
