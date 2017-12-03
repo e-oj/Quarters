@@ -12,15 +12,14 @@ let multer  = require("multer");
 let upload = multer({ dest: "uploads/" });
 
 let uploads = upload.fields([
-  {name: "profile_image", maxCount: 1}
-  , {name: "storage_image", maxCount: 1}
+  {name: "profile_img", maxCount: 1}
+  , {name: "storage_img", maxCount: 1}
 ]);
 
 let authenticate = [auth.checkToken, auth.checkAdmin];
 
-hostRouter.post("/new", authenticate, uploads, host.createHost);
+hostRouter.post("/", authenticate, uploads, host.createHost);
 hostRouter.delete("/", authenticate, host.deleteHost);
-hostRouter.put("/", authenticate, uploads, host.editHost);
 
 hostRouter.get("/", host.getHost);
 hostRouter.get("/all", host.getHosts);

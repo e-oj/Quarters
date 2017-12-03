@@ -68,7 +68,7 @@
     min-height: 35px;
     background-color: transparent;
     border: 2px solid white;
-    border-radius: 0;
+    border-radius: 4px;
     color: white;
     transition: all 0.2s linear;
     margin-left: 15px;
@@ -79,6 +79,10 @@
     color: #4992B7;
     background-color: white;
     cursor: pointer;
+  }
+
+  .button:focus{
+    outline: none;
   }
 
   .flex{
