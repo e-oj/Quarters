@@ -34,7 +34,7 @@ function success(res){
       , message: message
       , result: result || {message}
     });
-  }
+  };
 }
 
 module.exports = {

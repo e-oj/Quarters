@@ -81,6 +81,7 @@ exports.deleteHost = async function(req,res){
 
 /**
  * Gets host with specified ID
+ *
  * @param req request
  * @param res response
  * @returns {Promise.<void>}
@@ -92,6 +93,9 @@ exports.getHost = async function(req,res){
 
   try{
     let host = await Host.findOne({"_id": hostID});
+
+    if(!host) return respond(http.OK, "Host not found");
+
     host = host.toObject();
     respond(http.OK,"Host Found", {host});
   }
@@ -100,6 +104,13 @@ exports.getHost = async function(req,res){
   }
 };
 
+/**
+ * Gets all hosts or a number of hosts
+ *
+ * @param req
+ * @param res
+ * @returns {Promise.<void>}
+ */
 exports.getHosts = async(req, res) => {
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
