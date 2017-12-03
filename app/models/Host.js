@@ -7,6 +7,7 @@ const ERR_REQUIRED = `{PATH} is required`;
 let Schema = new mongoose.Schema({
   first_name: {type: String, required: ERR_REQUIRED}
   , last_name: {type:String,required:ERR_REQUIRED}
+  , linkedIn: {type: String}
   , profile_img: {
     data: {type: String, required: ERR_REQUIRED},
     mimetype: {type: String, required: ERR_REQUIRED},

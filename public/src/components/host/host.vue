@@ -1,11 +1,11 @@
 <template>
   <div class="host">
     <div class="head">
-      <img :src="'data:' + host.profile_img.mimetype + ';base64,' +host.profile_img.data"/>
+      <img :src="base64Img(host.profile_img)"/>
       <h4>{{host.first_name + " " + host.last_name}}</h4>
     </div>
     <div class="storage-img">
-      <img :src="'data:' + host.storage_img.mimetype + ';base64,' +host.storage_img.data"/>
+      <img :src="base64Img(host.storage_img)"/>
     </div>
   </div>
 </template>
@@ -13,6 +13,11 @@
 <script>
   export default{
     props: ["host"]
+    , methods: {
+      base64Img(img){
+        return `data:${img.mimetype};base64,${img.data}`
+      }
+    }
   }
 </script>
 

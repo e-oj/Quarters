@@ -24,11 +24,11 @@ exports.createHost = async function(req,res){
   let keys = Object.keys(req.files);
   let file;
 
+  host.linkedIn = req.body.linkedIn;
   host.first_name = req.body.first_name;
   host.last_name = req.body.last_name;
 
   try{
-
     for (let key of keys){
       file = files[key][0];
       await Files.attachImage(file, host, file.fieldname);
