@@ -56,6 +56,7 @@
           console.log("sending...", profileImg);
           let res = await self.$http.post(`${config.BASE_URL}/api/h/`, formData);
 
+          self.err = "";
           self.done = res.body.message;
           let $form = $("#add-hosts").find("form");
 
@@ -64,8 +65,8 @@
           self.last_name = "";
         }
         catch(err){
-          self.err = err.message;
-          console.log(err);
+          self.done = "";
+          self.err = err.body.error.message;
         }
       }
     }
