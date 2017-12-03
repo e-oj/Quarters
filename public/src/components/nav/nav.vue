@@ -2,7 +2,7 @@
   <div id="nav" class="reg-nav">
     <div id="nav-bar">
       <div class="logo">
-        <a href="/"><img src="/src/assets/logo.png"/></a>
+        <a href="/"><img src="/src/assets/icons/logo.png"/></a>
       </div>
       <div id="nav-items">
         <ul>
