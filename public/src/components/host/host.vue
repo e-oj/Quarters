@@ -61,9 +61,6 @@
     font-weight: 100;
   }
 
-  .storage-img{
-  }
-
   .storage-img img{
     width: 100%;
   }

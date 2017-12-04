@@ -17,6 +17,7 @@ mongoose.Promise = global.Promise = bluebird;
 
 let config = require("./config");
 let ApiRouter = require("./app/api");
+let dateSetup = require("./date.setup");
 
 mongoose.connect(config.DB_URL, {useMongoClient: true});
 
@@ -35,6 +36,8 @@ app.use("/api", ApiRouter);
 app.use("*", (req, res) => {
   res.sendFile(`${STATIC}/index.html`);
 });
+
+dateSetup();
 
 let server = app.listen(config.PORT);
 

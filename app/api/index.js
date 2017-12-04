@@ -12,11 +12,11 @@ let response = require("../../utils/response");
 let http = require("../../utils/HttpStats");
 
 let userRouter = require("./users");
-let itemRouter = require("./item");
+let bookingRouter = require("./booking");
 let hostRouter = require("./hosts");
 
 apiRouter.use("/u", userRouter);
-apiRouter.use("/i", itemRouter);
+apiRouter.use("/b", bookingRouter);
 apiRouter.use("/h", hostRouter);
 
 apiRouter.get("/", (req, res) => {
