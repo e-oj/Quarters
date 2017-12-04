@@ -27,6 +27,6 @@ export default new Router({
     }
     , {path: "/", component: Home}
     , {path:"/register", component: Registration}
-    , {path: "/book-now",component: Booking}
+    , {path: "/book",component: Booking}
   ]
 });

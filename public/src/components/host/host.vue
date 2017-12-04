@@ -26,6 +26,7 @@
     display: flex;
     flex-direction: column;
     min-width: 300px;
+    max-width: 300px;
     color: white;
   }
 
@@ -50,9 +51,6 @@
     margin-left: 20px;
     font-size: 1.1em;
     font-weight: 100;
-  }
-
-  .storage-img{
   }
 
   .storage-img img{

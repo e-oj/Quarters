@@ -6,10 +6,11 @@
 let moduleId = "api/item/item";
 let response = require("../../../utils/response");
 let http = require("../../../utils/HttpStats");
-let Item = require("../../models/Item").Item;
+let Booking = require("../../models/booking").Booking;
+let {Pickup, Delivery} = require("../../models/Dates");
 
 /**
- * Creates Item and returns success or failure response
+ * Creates Booking and returns success or failure response
  *
  * @param req request
  * @param res response
@@ -19,7 +20,7 @@ let Item = require("../../models/Item").Item;
 exports.createItem = async function(req, res){
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
-  let item = new Item();
+  let item = new Booking();
   let ownerID = req.user["_id"];
 
   item["name"] = req.body["name"];
@@ -29,8 +30,25 @@ exports.createItem = async function(req, res){
   item["delivery"] = req.body["delivery"];
 
   try{
+    let pickup = await Pickup.findById(item.pickup);
+    let delivery = await Delivery.findById(item.delivery);
+
+    if(! (pickup && delivery)){
+      return respondErr(http.NOT_FOUND, "Invalid Dates");
+    }
+
+    if(pickup.taken) return respondErr(http.CONFLICT, "Pickup time taken");
+    if(delivery.taken) return respondErr(http.CONFLICT, "Delivery time taken");
+
+    pickup.taken = true;
+    delivery.taken = true;
+
     item = await item.save();
-    respond(http.CREATED,"Item Created", {item});
+
+    await pickup.save();
+    await delivery.save();
+
+    respond(http.CREATED,"Booking Created", {item});
   }
   catch(err){
     respondErr(http.BAD_REQUEST,err.message,err);
@@ -50,34 +68,9 @@ exports.getAllItems = async function(req, res){
   let respondErr = response.failure(res, moduleId);
   let ownerID = req.user["_id"];
   try{
-    items = await Item.find({"userID": ownerID});
+    let items = await Booking.find({"userID": ownerID});
 
     respond(http.OK,"All Items Found", {items});
-  }
-  catch(err){
-    respondErr(http.BAD_REQUEST,err.message,err);
-  }
-};
-
-/**
- * returns the item with given _id in request query
- *
- * @param req request
- * @param res response
- *
- * @returns {Promise.<void>}
- */
-exports.getOneItem = async function(req, res){
-  let respond = response.success(res);
-  let respondErr = response.failure(res,moduleId);
-
-  let itemID = req.query["id"];
-  let ownerID = req.user["_id"];
-  try{
-    item = await Item.find({"userID": ownerID});
-    item = await Item.findOne({"_id": itemID});
-    item = item.toObject();
-    respond(http.OK,"Item Found", {item});
   }
   catch(err){
     respondErr(http.BAD_REQUEST,err.message,err);

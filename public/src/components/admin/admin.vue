@@ -64,7 +64,6 @@
     font-size: 0.5em;
     background-color: lightblue;
     justify-content: space-around;
-
   }
 
   #admin .controls li{
