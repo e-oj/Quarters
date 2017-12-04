@@ -20,30 +20,44 @@ exports.createHost = async function(req,res){
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
   let host = new Host();
-  let img = req.file;
-  console.log(img);
-  host["first_name"] = req.body["first_name"];
-  host["last_name"] = req.body["last_name"];
+  let files = req.files;
+  let keys = Object.keys(req.files);
+  let file;
+
+  host.linkedIn = req.body.linkedIn;
+  host.first_name = req.body.first_name;
+  host.last_name = req.body.last_name;
 
   try{
-    await Files.attachImage(img, host,"image");
+    for (let key of keys){
+      file = files[key][0];
+      await Files.attachImage(file, host, file.fieldname);
+    }
+
     host = await host.save();
     host.toObject();
     respond(http.CREATED,"Host Created", {host});
   }
   catch(err){
-    if(req.file){
-      let path = img.path;
-      try{
-        await fs.unlinkAsync(path);
-      }
-      catch(err){
-        console.log(err);
-      }
-    }
+    try{await cleanUp(req);}
+    catch (err){console.log(err);}
+
     respondErr(http.BAD_REQUEST,err.message,err);
   }
 };
+
+async function cleanUp(req){
+  if(!req.files) return;
+
+  let keys = Object.keys(req.files);
+  let file;
+
+  for (let key of keys){
+    file = req.files[key][0];
+
+    await fs.unlinkAsync(file.path);
+  }
+}
 
 /**
  * Deletes host from database
@@ -67,6 +81,7 @@ exports.deleteHost = async function(req,res){
 
 /**
  * Gets host with specified ID
+ *
  * @param req request
  * @param res response
  * @returns {Promise.<void>}
@@ -78,6 +93,9 @@ exports.getHost = async function(req,res){
 
   try{
     let host = await Host.findOne({"_id": hostID});
+
+    if(!host) return respond(http.OK, "Host not found");
+
     host = host.toObject();
     respond(http.OK,"Host Found", {host});
   }
@@ -86,6 +104,13 @@ exports.getHost = async function(req,res){
   }
 };
 
+/**
+ * Gets all hosts or a number of hosts
+ *
+ * @param req
+ * @param res
+ * @returns {Promise.<void>}
+ */
 exports.getHosts = async(req, res) => {
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);

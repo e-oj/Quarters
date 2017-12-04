@@ -79,8 +79,8 @@ exports.createUser = async (req, res) => {
 /**
  * Login route handler
  *
- * @param req
- * @param res
+ * @param req request
+ * @param res response
  *
  * @returns {Promise.<*>}
  */
@@ -107,11 +107,9 @@ exports.login = async (req, res) => {
     delete user.password;
 
     respond(http.OK, "Logged In!", {token, user});
-    console.log("got request: ", token);
   }
   catch(err){
     respondErr(http.SERVER_ERROR, err.message, err);
-    console.log(err);
   }
 };
 
