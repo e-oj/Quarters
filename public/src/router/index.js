@@ -1,5 +1,6 @@
 /**
  * @author EmmanuelOlaojo
+ * @author Chike Udenze
  * @since 11/25/17
  */
 
@@ -11,6 +12,7 @@ import Admin from "../components/admin/admin.vue";
 import AdminHost from "../components/admin/add.hosts.vue";
 import Registration from "../components/registration/registration.vue";
 import Booking from "../components/booking/booking.vue";
+import Hosts from "../components/host/hosts";
 
 Vue.use(Router);
 
@@ -28,5 +30,6 @@ export default new Router({
     , {path: "/", component: Home}
     , {path:"/register", component: Registration}
     , {path: "/book",component: Booking}
+    , {path: "/hosts", component: Hosts}
   ]
 });
