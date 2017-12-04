@@ -17,7 +17,7 @@ let {Pickup, Delivery} = require("../../models/Dates");
  *
  * @returns {Promise.<void>}
  */
-exports.createItem = async function(req, res){
+exports.createBooking = async function(req, res){
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
   let item = new Booking();
@@ -63,14 +63,14 @@ exports.createItem = async function(req, res){
  *
  * @returns {Promise.<void>}
  */
-exports.getAllItems = async function(req, res){
+exports.getAllBookings = async function(req, res){
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
   let ownerID = req.user["_id"];
   try{
-    let items = await Booking.find({"userID": ownerID});
+    let bookings = await Booking.find({"userID": ownerID});
 
-    respond(http.OK,"All Items Found", {items});
+    respond(http.OK,"All Items Found", {items: bookings});
   }
   catch(err){
     respondErr(http.BAD_REQUEST,err.message,err);

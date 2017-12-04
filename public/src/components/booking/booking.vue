@@ -1,9 +1,10 @@
 <template>
   <div id="booking">
-    Confirm Your Space today
+    <h1>Confirm Your Space today</h1>
 
-    <P v-for="day in pickupTimes">{{day}}</P>
-    <P v-for="day in deliveryTimes">{{day}}</P>
+    <form>
+
+    </form>
   </div>
 </template>
 
@@ -19,6 +20,8 @@
         , deliveryDays: []
         , pickupDay: "10"
         , deliveryDay: "10"
+        , size: ""
+        ,
       }
     }
     , computed: {
@@ -36,7 +39,7 @@
       }
     }
     , methods: {
-      times(){
+      setTimes(){
         let self = this;
         let pickup = {};
         let delivery = {};
@@ -75,6 +78,7 @@
 
           self.pickup = pickup;
           self.delivery = delivery;
+          self.setTimes();
         }
         catch(err){
           console.log(err);
@@ -86,7 +90,6 @@
 
       try{
         await self.getTimes();
-        self.times();
       }
       catch(err){
         console.log(err);
@@ -113,5 +116,8 @@
 <style>
   #booking{
     position: relative;
+    font-size: 0.17em;
+    display: flex;
+    flex-direction: column;
   }
 </style>
