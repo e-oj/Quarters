@@ -60,6 +60,7 @@
   import Vue from "vue"
   import VueResource from "vue-resource";
   import config from "../../config";
+  import router from "../../router";
 
   Vue.use(VueResource);
 
@@ -85,15 +86,22 @@
         let {alias, email,first_name,last_name,address,phone, password} = self;
 
         try{
-          let user = {alias,first_name,last_name,address,phone,password,email};
+          let User = {alias,first_name,last_name,address,phone,password,email};
           let signupRoute = `${config.BASE_URL}/api/u/`;
-          let res = await self.$http.post(signupRoute, user,{
+          let res = await self.$http.post(signupRoute, User,{
             headers: {
               'Content-Type': 'application/json'
             }
           });
 
           console.log(res);
+          console.log(res.body.result);
+          let {token, user} = res.body.result;
+
+          localStorage.setItem(config.AUTH, token);
+          localStorage.setItem(config.ADMIN, user.admin);
+
+          router.push({path:"/"});
         }
         catch(err){
           console.log(err);
