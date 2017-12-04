@@ -37,7 +37,7 @@
         <host v-for="host in hosts" :key="host._id" :host="host"></host>
       </div>
 
-      <a class="button">All Hosts</a>
+      <router-link class="button" to="/hosts">All Hosts</router-link>
     </div>
   </div>
 </template>
@@ -52,7 +52,7 @@
         stickyNav: false
         , how: [
           {
-            description: "Select a size option and host provider. " +
+            description: "Select a size option and we'll match you with a host provider. " +
               "Schedule a pick up and delivery dates"
             , img: {
               src: "/src/assets/icons/calendar_2x.png"

@@ -17,6 +17,10 @@
         <label for="add-storage-image">Storage Image</label>
         <input id="add-storage-image" type="file"/>
       </div>
+      <div>
+        <label for="add-linkedIn">LinkedIn</label>
+        <input v-model="linkedIn" id="add-linkedIn" type="text"/>
+      </div>
 
       <button>Submit</button>
     </form>
@@ -36,6 +40,7 @@
         , last_name: ""
         , err: ""
         , done: ""
+        ,linkedIn: ""
       }
     }
     , methods: {
@@ -48,6 +53,7 @@
         for(let key of ["first", "last"]){
           formData.append(`${key}_name`, self[`${key}_name`]);
         }
+        formData.append("linkedIn", self.linkedIn);
 
         formData.append("profile_img", profileImg);
         formData.append("storage_img", storageImg);
