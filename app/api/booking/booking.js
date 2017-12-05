@@ -101,3 +101,5 @@ exports.getAllBookings = async function(req, res){
     respondErr(http.BAD_REQUEST,err.message,err);
   }
 };
+
+
