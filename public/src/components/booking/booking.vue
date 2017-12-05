@@ -2,7 +2,70 @@
   <div id="booking">
     <h1>Confirm Your Space today</h1>
 
-    <form>
+    <form class="b-form">
+
+      <div>
+        <div class="header">Select Size</div>
+        <div class="radios">
+          <div v-for="s in sizes" class="radio">
+            <label>
+              <input type="radio" :id="'s_' + s" :value="s" v-model="size"/>
+              <label :for="'s_' + s">{{s}}</label>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="header">
+          Pickup Date
+          <div class="sub-header">December</div>
+        </div>
+
+        <div class="pickup">
+          <div class="multi-select">
+            <label for="pickup-day"></label>
+            <select id="pickup-day" v-model="pickupDay">
+              <option disabled value="">Pick a day</option>
+              <option v-for="day in pickupDays" :value="day">{{day + "th"}}</option>
+            </select>
+          </div>
+
+          <div class="multi-select">
+            <label for="pickup-time"></label>
+            <select id="pickup-time" :disabled="!pickupDay" v-model="pickupTime">
+              <option disabled value="">Pick a time</option>
+              <option v-for="time in pickupTimes" :value="time">{{time}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="header">
+          Delivery Date
+          <div class="sub-header">January</div>
+        </div>
+
+
+        <div class="delivery">
+          <div class="multi-select">
+            <label for="delivery-day"></label>
+            <select id="delivery-day" v-model="deliveryDay">
+              <option disabled value="">Pick a day</option>
+              <option v-for="day in deliveryDays" :value="day">{{day + "th"}}</option>
+            </select>
+          </div>
+
+          <div class="multi-select">
+            <label for="delivery-time"></label>
+            <select id="delivery-time" :disabled="!deliveryDay" v-model="deliveryTime">
+              <option disabled value="">Pick a time</option>
+              <option v-for="time in deliveryTimes" :value="time">{{time}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
 
     </form>
   </div>
@@ -18,10 +81,12 @@
         , delivery: []
         , pickupDays: []
         , deliveryDays: []
-        , pickupDay: "10"
-        , deliveryDay: "10"
+        , pickupDay: ""
+        , pickupTime: ""
+        , deliveryDay: ""
+        , deliveryTime: ""
+        , sizes: ["5x5", "5x10", "10x10", "10x15", "10x20"]
         , size: ""
-        ,
       }
     }
     , computed: {
@@ -29,17 +94,21 @@
         let self = this;
         let pickup = self.pickup[self.pickupDay];
 
-        if(pickup) return Object.keys(pickup);
+        if(pickup) return Object.keys(pickup).sort();
       }
       , deliveryTimes(){
         let self = this;
         let delivery = self.delivery[self.deliveryDay];
 
-        if(delivery) return Object.keys(delivery);
+        if(delivery) return Object.keys(delivery).sort();
       }
     }
     , methods: {
-      setTimes(){
+      pad(num){
+        let s = "0" + num;
+        return s.substring(s.length - 2);
+      }
+      , setTimes(){
         let self = this;
         let pickup = {};
         let delivery = {};
@@ -51,23 +120,27 @@
         self.delivery = delivery;
       }
       , parseTimes(dates, result){
+        let self = this;
         let days = [];
 
         for(let obj of dates){
-          let date = obj.date;
-          let parts = date.split("T");
-          let day = parts[0].split("-")[2];
-          let time = parts[1].substring(0, 5);
+          let date = new Date(obj.date);
+          let day = date.getUTCDate() + "";
+          let hours = self.pad(date.getHours());
+          let mins = self.pad(date.getMinutes());
+          let time = `${hours}:${mins}`;
 
-          if(!result[day]){
+          if(result[day] === undefined){
             result[day] = {};
             days.push(day);
           }
 
-          result[day][time] = obj._id
+          result[day][time] = obj._id;
+
+          if(day === "10") console.log(result);
         }
 
-        return days;
+        return days.sort();
       }
       , async getTimes(){
         let self = this;
@@ -119,5 +192,86 @@
     font-size: 0.17em;
     display: flex;
     flex-direction: column;
+    font-family: Nunito, Quicksand, sans-serif;
   }
+
+  #booking h1{
+    text-align: center;
+    font-size: 0.7em;
+    margin: 50px;
+  }
+
+  .b-form{
+    display: flex;
+    flex-direction: column;
+    max-width: 700px;
+    min-width: 700px;
+    margin: auto;
+  }
+
+  .b-form .header{
+    font-size: 0.6em;
+    text-align: center;
+    margin: 10px;
+  }
+
+  .b-form .sub-header{
+    font-size: 0.7em;
+    text-align: center;
+    margin: 10px;
+  }
+
+  .b-form .radios, .b-form .pickup, .b-form .delivery{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+  }
+
+  .b-form .radio{
+    margin-right: 40px;
+  }
+
+  .b-form .radio:last-child{
+    margin-right: 0;
+  }
+
+  .b-form input[type="radio"]{
+    display: none;
+  }
+
+  .b-form input[type="radio"] + label{
+    background-color: #35667F;
+    color: white;
+    display: flex;
+    width: 70px;
+    height: 70px;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.5em;
+    border-radius: 4px;
+    transition: all 0.2s linear;
+  }
+
+  .b-form input[type="radio"] + label:hover{
+    cursor: pointer;
+    background-color: #417D9A;
+    color: lightblue;
+  }
+
+  .b-form input[type="radio"]:checked + label{
+    background-color: #8CAFC0;
+  }
+
+  .b-form .pickup, .b-form .delivery{
+    justify-content: space-evenly;
+  }
+
+  .b-form .multi-select select{
+    width: 300px;
+    height: 35px;
+    background: white;
+    font-size: 0.5em;
+  }
+
 </style>

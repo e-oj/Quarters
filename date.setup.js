@@ -59,8 +59,7 @@ module.exports = function() {
         await delivery.save();
       }
 
-      console.log(pickupTimes);
-      console.log(deliveryTimes);
+      console.log(times);
     }
     catch(err){
       console.log(err);
