@@ -33,14 +33,30 @@ module.exports = function() {
 
       for(let day of pickupDates){
         for(let time of times){
-          let date = new Date(`December ${day}, 2017 ${time}:00`);
+          let date = new Date();
+          let parts = time.split(":");
+
+          date.setDate(day);
+          date.setHours(parts[0]);
+          date.setMinutes(parts[1]);
+          date.setMonth(11);
+          date.setFullYear(2017);
+
           pickupTimes.push(date);
         }
       }
 
       for(let day of deliveryDates){
         for(let time of times){
-          let date = new Date(`January ${day}, 2018 ${time}:00`);
+          let date = new Date();
+          let parts = time.split(":");
+
+          date.setDate(day);
+          date.setHours(parts[0]);
+          date.setMinutes(parts[1]);
+          date.setMonth(1);
+          date.setFullYear(2018);
+
           deliveryTimes.push(date);
         }
       }
