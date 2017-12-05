@@ -10,7 +10,7 @@
           <li><a href="/">Hosts</a></li>
           <li><a href="/">Rates</a></li>
           <li v-if="!loggedIn"><a href="/">Team</a></li>
-          <li v-if="loggedIn"><a href="/">Your Stör</a></li>
+          <li v-if="loggedIn"><router-link to="/your-stor">Your Stör</router-link></li>
         </ul>
         <div class="nav-action">
           <a v-if="loggedIn" href="">Book Now</a>

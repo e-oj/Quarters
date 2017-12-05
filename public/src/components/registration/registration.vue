@@ -1,8 +1,6 @@
 <!-- @author Chike Udenze
      @since 11/29/2017
  -->
-
-
 <template>
     <div id="register">
           <!-- form starts here -->

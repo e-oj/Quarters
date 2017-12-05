@@ -1,4 +1,7 @@
-/* eslint-disable quotes */
+/**
+ * @author Akram Meza
+ * @since 12/3/17
+ */
 
 let mongoose = require("mongoose");
 const ERR_REQUIRED = `{PATH} is required`;
