@@ -2,7 +2,7 @@
   <div id="booking">
     <h1>Confirm Your Space today</h1>
 
-    <form class="b-form">
+    <form class="b-form" @submit.prevent="submit">
 
       <div>
         <div class="header">
@@ -131,13 +131,14 @@
       }
     }
     , methods: {
-      addItem(){
+      submit(){
         let self = this;
 
-        self.items.push({
-          name: ""
-          , description: ""
-        });
+        console.log(self.items);
+      }
+      , addItem(){
+        let self = this;
+        self.items.push({});
       }
       , pad(num){
         let s = "0" + num;
