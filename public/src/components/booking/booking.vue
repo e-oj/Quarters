@@ -5,7 +5,10 @@
     <form class="b-form">
 
       <div>
-        <div class="header">Select Size</div>
+        <div class="header">
+          Select Size
+          <div class="sub-header">feet</div>
+        </div>
         <div class="radios">
           <div v-for="s in sizes" class="radio">
             <label>
@@ -67,6 +70,26 @@
         </div>
       </div>
 
+      <div>
+        <div class="header">
+          Items to be stored
+        </div>
+
+        <div class="items">
+          <div v-for="item in items" class="item">
+            <label>
+              <input type="text" placeholder="Item Name" v-model="item.name"/>
+            </label>
+            <label>
+              <input type="text" placeholder="Item Description" v-model="item.description"/>
+            </label>
+          </div>
+
+          <button class="button" @click.prevent="addItem">Add Item</button>
+        </div>
+      </div>
+
+      <button class="button">Book Now</button>
     </form>
   </div>
 </template>
@@ -87,6 +110,10 @@
         , deliveryTime: ""
         , sizes: ["5x5", "5x10", "10x10", "10x15", "10x20"]
         , size: ""
+        , items: [{
+          name: ""
+          , description: ""
+        }]
       }
     }
     , computed: {
@@ -104,7 +131,15 @@
       }
     }
     , methods: {
-      pad(num){
+      addItem(){
+        let self = this;
+
+        self.items.push({
+          name: ""
+          , description: ""
+        });
+      }
+      , pad(num){
         let s = "0" + num;
         return s.substring(s.length - 2);
       }
@@ -136,8 +171,6 @@
           }
 
           result[day][time] = obj._id;
-
-          if(day === "10") console.log(result);
         }
 
         return days.sort();
@@ -221,7 +254,9 @@
     margin: 10px;
   }
 
-  .b-form .radios, .b-form .pickup, .b-form .delivery{
+  .b-form .radios
+  , .b-form .pickup
+  , .b-form .delivery {
     display: flex;
     flex-direction: row;
     align-content: center;
@@ -263,15 +298,49 @@
     background-color: #8CAFC0;
   }
 
-  .b-form .pickup, .b-form .delivery{
+  .b-form .pickup, .b-form .delivery,  .b-form .item{
     justify-content: space-evenly;
   }
 
-  .b-form .multi-select select{
+  .b-form .items{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .b-form .item{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+
+  .b-form button{
+    width: 100px;
+    height: 35px;
+    color: #35667F;
+    background: white;
+    font-size: 0.5em;
+    border: 2px solid #35667F;
+    margin: 20px auto;
+  }
+
+  .b-form button:hover{
+    color: white;
+    background: #35667F;
+  }
+
+  .b-form input{
+    text-indent: 5px;
+  }
+
+  .b-form input::placeholder{
+    color: gray;
+  }
+
+  .b-form .multi-select select, .b-form .items input{
     width: 300px;
     height: 35px;
     background: white;
     font-size: 0.5em;
   }
-
 </style>
