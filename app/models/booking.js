@@ -14,6 +14,10 @@ let BookingSchema = new Schema({
   ,size: {type:String, required: ERR_REQUIRED}
   ,userID: {type: Schema.Types.ObjectId, ref: "Users", required: ERR_REQUIRED}
   ,hostID: {type: Schema.Types.ObjectId, ref: "Hosts", required: ERR_REQUIRED}
+  ,items: [{
+    name: {type: String}
+    ,description: {type: String}
+  }]
 });
 
 exports.Booking = mongoose.model("Booking", BookingSchema);

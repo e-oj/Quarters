@@ -20,18 +20,42 @@ let {Pickup, Delivery} = require("../../models/Dates");
 exports.createBooking = async function(req, res){
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
-  let item = new Booking();
+  let booking = new Booking();
   let ownerID = req.user["_id"];
+  let nodeMailer = require("nodemailer");
 
-  item["name"] = req.body["name"];
-  item["size"] = req.body["size"];
-  item["userID"] = ownerID;
-  item["pickup"] = req.body["pickup"];
-  item["delivery"] = req.body["delivery"];
+  let transporter = nodeMailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "thestorteam@gmail.com",
+      pass: "T3x%a10!"
+    }
+  });
+
+  let mailOptions = {
+    from: "thestorteam@gmail.com",
+    to: "thestorteam@gmail.com, chikeudenze@gmail.com, ooolaojo@gmail.com",
+    subject: "New Stör Booking!",
+    text: "Your Daddy"
+  };
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+
+  booking["name"] = req.body["name"];
+  booking["size"] = req.body["size"];
+  booking["userID"] = ownerID;
+  booking["pickup"] = req.body["pickup"];
+  booking["delivery"] = req.body["delivery"];
+  booking["items"] = req.body.items;
 
   try{
-    let pickup = await Pickup.findById(item.pickup);
-    let delivery = await Delivery.findById(item.delivery);
+    let pickup = await Pickup.findById(booking.pickup);
+    let delivery = await Delivery.findById(booking.delivery);
 
     if(! (pickup && delivery)){
       return respondErr(http.NOT_FOUND, "Invalid Dates");
@@ -43,12 +67,13 @@ exports.createBooking = async function(req, res){
     pickup.taken = true;
     delivery.taken = true;
 
-    item = await item.save();
+    booking = await booking.save();
 
     await pickup.save();
     await delivery.save();
 
-    respond(http.CREATED,"Booking Created", {item});
+    respond(http.CREATED,"Booking Created", {booking});
+
   }
   catch(err){
     respondErr(http.BAD_REQUEST,err.message,err);
