@@ -6,12 +6,12 @@
 let mongoose = require("mongoose");
 
 let PickupDateSchema = new mongoose.Schema({
-  date: {type: Date, required: true}
+  date: {type: String, required: true}
   , taken: {type: Boolean, default: false}
 });
 
 let DeliveryDateSchema = new mongoose.Schema({
-  date: {type: Date, required: true}
+  date: {type: String, required: true}
   , taken: {type: Boolean, default: false}
 });
 

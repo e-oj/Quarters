@@ -2,7 +2,7 @@
   <div id="booking">
     <h1>Confirm Your Space today</h1>
 
-    <form class="b-form">
+    <form class="b-form" @submit.prevent="submit">
 
       <div>
         <div class="header">
@@ -89,6 +89,9 @@
         </div>
       </div>
 
+      <div v-if="error" class="header error">{{error}}</div>
+      <div v-if="success" class="header success">{{success}}</div>
+
       <button class="button">Book Now</button>
     </form>
   </div>
@@ -114,6 +117,8 @@
           name: ""
           , description: ""
         }]
+        , error: ""
+        , success: ""
       }
     }
     , computed: {
@@ -131,17 +136,48 @@
       }
     }
     , methods: {
-      addItem(){
-        let self = this;
-
-        self.items.push({
-          name: ""
-          , description: ""
-        });
+      compare(a, b){
+        return a - b;
       }
-      , pad(num){
-        let s = "0" + num;
-        return s.substring(s.length - 2);
+      , async submit(){
+        let self = this;
+        let booking = {};
+        let pickupDay = self.pickupDay;
+        let deliveryDay = self.deliveryDay;
+        let pickupTime = self.pickupTime;
+        let deliveryTime = self.deliveryTime;
+
+        booking.size = self.size;
+
+        if(pickupDay && deliveryDay && pickupTime && deliveryTime){
+          booking.pickup = self.pickup[pickupDay][pickupTime];
+          booking.delivery = self.delivery[deliveryDay][deliveryTime];
+        }
+
+        booking.items = [];
+
+        for(let item of self.items){
+          if(item.name && item.description){
+            booking.items.push(item);
+          }
+        }
+
+        try{
+          let res = await self.$http.post(`${config.BASE_URL}/api/b/new`, booking);
+
+          self.error = "";
+          self.success = res.body.message;
+
+          $(".b-form").find("input").val("");
+        }
+        catch(err){
+          self.success = "";
+          self.error = err.body.error.message;
+        }
+      }
+      , addItem(){
+        let self = this;
+        self.items.push({});
       }
       , setTimes(){
         let self = this;
@@ -159,11 +195,9 @@
         let days = [];
 
         for(let obj of dates){
-          let date = new Date(obj.date);
-          let day = date.getUTCDate() + "";
-          let hours = self.pad(date.getHours());
-          let mins = self.pad(date.getMinutes());
-          let time = `${hours}:${mins}`;
+          let date = obj.date.split("-");
+          let day = date[0];
+          let time = date[1];
 
           if(result[day] === undefined){
             result[day] = {};
@@ -173,7 +207,7 @@
           result[day][time] = obj._id;
         }
 
-        return days.sort();
+        return days.sort(self.compare);
       }
       , async getTimes(){
         let self = this;
@@ -343,5 +377,13 @@
     height: 35px;
     background: white;
     font-size: 0.5em;
+  }
+
+  .b-form .error{
+    color: red;
+  }
+
+  .b-form .success{
+    color: green;
   }
 </style>

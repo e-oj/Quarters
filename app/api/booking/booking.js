@@ -6,8 +6,10 @@
 let moduleId = "api/item/item";
 let response = require("../../../utils/response");
 let http = require("../../../utils/HttpStats");
+let Host = require("../../models/Host").Host;
 let Booking = require("../../models/booking").Booking;
-let {Pickup, Delivery} = require("../../models/Dates");
+let Pickup = require("../../models/Dates").Pickup;
+let Delivery = require("../../models/Dates").Delivery;
 
 /**
  * Creates Booking and returns success or failure response
@@ -22,16 +24,26 @@ exports.createBooking = async function(req, res){
   let respondErr = response.failure(res, moduleId);
   let booking = new Booking();
   let ownerID = req.user["_id"];
-  let nodeMailer = require("nodemailer");
 
-  booking["name"] = req.body["name"];
-  booking["size"] = req.body["size"];
-  booking["userID"] = ownerID;
-  booking["pickup"] = req.body["pickup"];
-  booking["delivery"] = req.body["delivery"];
-  booking["items"] = req.body.items;
+  let props = ["size", "pickup", "delivery", "items"];
+
+  for(let prop of props){
+    booking[prop] = req.body[prop];
+  }
+
+  booking.user = ownerID;
 
   try{
+    let count = await Host.count().exec();
+    let rand = Math.floor(Math.random() * count);
+    let host = await Host.findOne().skip(rand).exec();
+
+    if(!host){
+      return respondErr(http.NOT_FOUND, "No hosts found");
+    }
+
+    booking.host = host;
+
     let pickup = await Pickup.findById(booking.pickup);
     let delivery = await Delivery.findById(booking.delivery);
 
@@ -47,32 +59,12 @@ exports.createBooking = async function(req, res){
 
     booking = await booking.save();
 
+    console.log(booking);
+
     await pickup.save();
     await delivery.save();
 
-    respond(http.CREATED,"Booking Created", {booking});
-    let transporter = nodeMailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "thestorteam@gmail.com",
-        pass: "T3x%a10!"
-      }
-    });
-
-    let mailOptions = {
-      from: "thestorteam@gmail.com",
-      to: "thestorteam@gmail.com, chikeudenze@gmail.com, ooolaojo@gmail.com",
-      subject: "New Stör Booking!",
-      text: "Your Daddy"
-    };
-    transporter.sendMail(mailOptions, function(error, info){
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Email sent: " + info.response);
-      }
-    });
-
+    respond(http.CREATED,"Booking Created", {item: booking});
   }
   catch(err){
     respondErr(http.BAD_REQUEST,err.message,err);
@@ -100,5 +92,3 @@ exports.getAllBookings = async function(req, res){
     respondErr(http.BAD_REQUEST,err.message,err);
   }
 };
-
-
