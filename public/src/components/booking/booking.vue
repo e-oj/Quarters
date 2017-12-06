@@ -157,7 +157,7 @@
         booking.items = [];
 
         for(let item of self.items){
-          if(item){
+          if(item.name && item.description){
             booking.items.push(item);
           }
         }
