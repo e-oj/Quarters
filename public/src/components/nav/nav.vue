@@ -12,8 +12,9 @@
           <li v-if="!loggedIn"><a href="/">Team</a></li>
           <li v-if="loggedIn"><a href="/">Your Stör</a></li>
         </ul>
+
         <div class="nav-action">
-          <a v-if="loggedIn" href="">Book Now</a>
+          <router-link v-if="loggedIn" to="/book">Book Now</router-link>
           <router-link v-else to="/register">Sign Up</router-link>
           <a v-if="loggedIn" class="sign-out" @click="signOut">Sign Out</a>
           <a v-else class="login" @click="displayLogin">Login</a>
@@ -38,8 +39,6 @@
     , methods: {
       signOut(){
         let self = this;
-
-        console.log("hey Thya");
 
         localStorage.removeItem(config.AUTH);
         localStorage.removeItem(config.ADMIN);

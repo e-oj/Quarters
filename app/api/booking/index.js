@@ -10,8 +10,8 @@ let booking = require("./booking");
 let dates = require("./dates");
 let bookingRouter = express.Router();
 
-bookingRouter.post("/new",auth.checkToken,booking.createItem);
-bookingRouter.get("/all", auth.checkToken, booking.getAllItems);
+bookingRouter.post("/new",auth.checkToken,booking.createBooking);
+bookingRouter.get("/all", auth.checkToken, booking.getAllBookings);
 bookingRouter.get("/dates", dates.getDates);
 
 module.exports = bookingRouter;

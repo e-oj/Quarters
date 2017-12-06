@@ -6,8 +6,10 @@
 let moduleId = "api/item/item";
 let response = require("../../../utils/response");
 let http = require("../../../utils/HttpStats");
+let Host = require("../../models/Host").Host;
 let Booking = require("../../models/booking").Booking;
-let {Pickup, Delivery} = require("../../models/Dates");
+let Pickup = require("../../models/Dates").Pickup;
+let Delivery = require("../../models/Dates").Delivery;
 
 /**
  * Creates Booking and returns success or failure response
@@ -17,21 +19,33 @@ let {Pickup, Delivery} = require("../../models/Dates");
  *
  * @returns {Promise.<void>}
  */
-exports.createItem = async function(req, res){
+exports.createBooking = async function(req, res){
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
-  let item = new Booking();
+  let booking = new Booking();
   let ownerID = req.user["_id"];
 
-  item["name"] = req.body["name"];
-  item["size"] = req.body["size"];
-  item["userID"] = ownerID;
-  item["pickup"] = req.body["pickup"];
-  item["delivery"] = req.body["delivery"];
+  let props = ["size", "pickup", "delivery", "items"];
+
+  for(let prop of props){
+    booking[prop] = req.body[prop];
+  }
+
+  booking.user = ownerID;
 
   try{
-    let pickup = await Pickup.findById(item.pickup);
-    let delivery = await Delivery.findById(item.delivery);
+    let count = await Host.count().exec();
+    let rand = Math.floor(Math.random() * count);
+    let host = await Host.findOne().skip(rand).exec();
+
+    if(!host){
+      return respondErr(http.NOT_FOUND, "No hosts found");
+    }
+
+    booking.host = host;
+
+    let pickup = await Pickup.findById(booking.pickup);
+    let delivery = await Delivery.findById(booking.delivery);
 
     if(! (pickup && delivery)){
       return respondErr(http.NOT_FOUND, "Invalid Dates");
@@ -43,12 +57,14 @@ exports.createItem = async function(req, res){
     pickup.taken = true;
     delivery.taken = true;
 
-    item = await item.save();
+    booking = await booking.save();
+
+    console.log(booking);
 
     await pickup.save();
     await delivery.save();
 
-    respond(http.CREATED,"Booking Created", {item});
+    respond(http.CREATED,"Booking Created", {item: booking});
   }
   catch(err){
     respondErr(http.BAD_REQUEST,err.message,err);
@@ -63,14 +79,14 @@ exports.createItem = async function(req, res){
  *
  * @returns {Promise.<void>}
  */
-exports.getAllItems = async function(req, res){
+exports.getAllBookings = async function(req, res){
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
   let ownerID = req.user["_id"];
   try{
-    let items = await Booking.find({"userID": ownerID});
+    let bookings = await Booking.find({"userID": ownerID});
 
-    respond(http.OK,"All Items Found", {items});
+    respond(http.OK,"All Items Found", {items: bookings});
   }
   catch(err){
     respondErr(http.BAD_REQUEST,err.message,err);
