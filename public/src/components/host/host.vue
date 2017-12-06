@@ -3,6 +3,7 @@
     <div class="head">
       <img :src="base64Img(host.profile_img)"/>
       <h4>{{host.first_name + " " + host.last_name}}</h4>
+      <a id="linkedin" target="_blank" v-if="host.linkedIn" :href="host.linkedIn" ><i class="fa fa-linkedin-square fa-2x" ></i></a>
     </div>
     <div class="storage-img">
       <img :src="base64Img(host.storage_img)"/>
@@ -22,11 +23,19 @@
 </script>
 
 <style>
+
   .host{
     display: flex;
     flex-direction: column;
     min-width: 300px;
+    max-width: 300px;
     color: white;
+    position: relative;
+  }
+  #linkedin{
+    position: absolute;
+    left: 250px;
+    right: 20px;
   }
 
   .host .head{
@@ -52,10 +61,8 @@
     font-weight: 100;
   }
 
-  .storage-img{
-  }
-
   .storage-img img{
     width: 100%;
   }
+  a { color: inherit; }
 </style>
