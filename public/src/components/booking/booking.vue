@@ -73,6 +73,7 @@
       <div>
         <div class="header">
           Items to be stored
+          <div class="sub-header">Name & Description</div>
         </div>
 
         <div class="items">
@@ -260,6 +261,7 @@
     display: flex;
     flex-direction: column;
     font-family: Nunito, Quicksand, sans-serif;
+    color: #396F89;
   }
 
   #booking h1{
@@ -310,7 +312,7 @@
   }
 
   .b-form input[type="radio"] + label{
-    background-color: #35667F;
+    background-color: #4992B7;
     color: white;
     display: flex;
     width: 70px;
@@ -330,6 +332,24 @@
 
   .b-form input[type="radio"]:checked + label{
     background-color: #8CAFC0;
+  }
+
+  select, input{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border-radius: 0;
+    border: 2px solid #4992B7;
+    text-indent: 5px;
+    color: #396F89;
+    transition: all 0.2s linear;
+  }
+
+  select:hover{
+    cursor: pointer;
+  }
+
+  select:disabled{
+    color: #4992B7;
   }
 
   .b-form .pickup, .b-form .delivery,  .b-form .item{
@@ -354,13 +374,13 @@
     color: #35667F;
     background: white;
     font-size: 0.5em;
-    border: 2px solid #35667F;
+    border: 2px solid #4992B7;
     margin: 20px auto;
   }
 
   .b-form button:hover{
     color: white;
-    background: #35667F;
+    background: #4992B7;
   }
 
   .b-form input{
@@ -368,7 +388,8 @@
   }
 
   .b-form input::placeholder{
-    color: gray;
+    color: #396F89;
+    opacity: 1;
   }
 
   .b-form .multi-select select, .b-form .items input{
