@@ -27,36 +27,22 @@ module.exports = function() {
       }
 
       for(let i = 9; i < 24; i++){
-        times.push(`${i}:00`);
-        times.push(`${i}:30`);
+        let j = i < 10 ? `0${i}` : i;
+
+        times.push(`${j}:00`);
+        times.push(`${j}:30`);
       }
 
       for(let day of pickupDates){
         for(let time of times){
-          let date = new Date();
-          let parts = time.split(":");
-
-          date.setDate(day);
-          date.setHours(parts[0]);
-          date.setMinutes(parts[1]);
-          date.setMonth(11);
-          date.setFullYear(2017);
-
+          let date = `${day}-${time}`;
           pickupTimes.push(date);
         }
       }
 
       for(let day of deliveryDates){
         for(let time of times){
-          let date = new Date();
-          let parts = time.split(":");
-
-          date.setDate(day);
-          date.setHours(parts[0]);
-          date.setMinutes(parts[1]);
-          date.setMonth(1);
-          date.setFullYear(2018);
-
+          let date = `${day}-${time}`;
           deliveryTimes.push(date);
         }
       }
@@ -66,6 +52,7 @@ module.exports = function() {
 
         pickup.date = time;
         await pickup.save();
+        console.log(pickup);
       }
 
       for(let time of deliveryTimes){
@@ -74,8 +61,6 @@ module.exports = function() {
         delivery.date = time;
         await delivery.save();
       }
-
-      console.log(times);
     }
     catch(err){
       console.log(err);
