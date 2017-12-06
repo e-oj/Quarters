@@ -215,6 +215,7 @@
       $container.css({
         top: $nav.height()
       });
+      console.log(self.pickup);
     }
   }
 </script>

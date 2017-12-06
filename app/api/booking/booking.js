@@ -24,28 +24,6 @@ exports.createBooking = async function(req, res){
   let ownerID = req.user["_id"];
   let nodeMailer = require("nodemailer");
 
-  let transporter = nodeMailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: "thestorteam@gmail.com",
-      pass: "T3x%a10!"
-    }
-  });
-
-  let mailOptions = {
-    from: "thestorteam@gmail.com",
-    to: "thestorteam@gmail.com, chikeudenze@gmail.com, ooolaojo@gmail.com",
-    subject: "New Stör Booking!",
-    text: "Your Daddy"
-  };
-  transporter.sendMail(mailOptions, function(error, info){
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("Email sent: " + info.response);
-    }
-  });
-
   booking["name"] = req.body["name"];
   booking["size"] = req.body["size"];
   booking["userID"] = ownerID;
@@ -73,6 +51,27 @@ exports.createBooking = async function(req, res){
     await delivery.save();
 
     respond(http.CREATED,"Booking Created", {booking});
+    let transporter = nodeMailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "thestorteam@gmail.com",
+        pass: "T3x%a10!"
+      }
+    });
+
+    let mailOptions = {
+      from: "thestorteam@gmail.com",
+      to: "thestorteam@gmail.com, chikeudenze@gmail.com, ooolaojo@gmail.com",
+      subject: "New Stör Booking!",
+      text: "Your Daddy"
+    };
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
 
   }
   catch(err){

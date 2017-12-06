@@ -92,8 +92,6 @@
             }
           });
 
-          console.log(res);
-          console.log(res.body.result);
           let {token, user} = res.body.result;
 
           localStorage.setItem(config.AUTH, token);

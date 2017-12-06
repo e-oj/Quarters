@@ -11,6 +11,7 @@ let response = require("../../../utils/response");
 let http = require("../../../utils/HttpStats");
 let User = require("../../models/User").User;
 let auth = require("../../../utils/authToken");
+let nodeMailer = require("nodemailer");
 
 /**
  * Route handler to get users
@@ -70,6 +71,27 @@ exports.createUser = async (req, res) => {
     delete user.password;
 
     respond(http.CREATED, "User Created", {user, token});
+    let transporter = nodeMailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "thestorteam@gmail.com",
+        pass: "T3x%a10!"
+      }
+    });
+
+    let mailOptions = {
+      from: "thestorteam@gmail.com",
+      to: "thestorteam@gmail.com, chikeudenze@gmail.com, ooolaojo@gmail.com",
+      subject: "New Stör Booking!",
+      text: "Your Daddy"
+    };
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
   }
   catch(err){
     respondErr(http.BAD_REQUEST, err.message, err);
