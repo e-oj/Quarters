@@ -1,22 +1,28 @@
 <template>
-  <div id="stor">
-    <div class="booking" v-for="booking in bookings">
-      <p> Storage Size : {{booking.size}} (feet)</p>
-      <p> Pickup Date: {{booking.pickup.date}}</p>
-      <p> Delivery Date: {{booking.delivery.date}}</p>
-      <div class="booking-host">
-        <host v-model="host"></host>
-      </div>
-      <div class="items">
-        <h1>Items</h1>
-        <div class="item" v-for="item in booking.items">
-          <p> Name: {{item.name}}</p>
-          <p> Description: {{item.description}}</p>
+  <div id="overall">
+    <div id="stor">
+      <div class="booking" v-for="booking in bookings">
+        <div class="booking-label">
+          <img :src="base64Img(booking.host.profile_img)"/>
+          <div class="size-label">
+            {{booking.size}}
+          </div>
         </div>
-      </div>
-      <div class="booking-host">
-        <host v-model="host"></host>
-      </div>
+        <div class="time-slot" >
+          <div class="date-display">
+            <h2> December {{booking.pickup.date.split("-")[0]}}th </h2>
+            Pickup Time: {{booking.pickup.date.split("-")[1]}}
+          </div>
+          <div class="date-display">
+            <h2> January {{booking.delivery.date.split("-")[0]}}th </h2>
+            Delivery Time: {{booking.delivery.date.split("-")[1]}}
+          </div>
+        </div>
+          <div class="item" v-for="item in booking.items">
+            {{item.name}}: {{item.description}}
+          </div>
+
+    </div>
     </div>
   </div>
 </template>
@@ -26,20 +32,12 @@
   import Booking from "../booking/booking.vue"
   import Host from "../host/host.vue"
 
+
   export default{
     data(){
       return {
         bookings: []
         ,size: ''
-        ,host: ''
-        ,pickup:{
-          date:''
-          ,taken: ''
-        }
-        ,delivery:{
-          date:''
-          ,taken: ''
-        }
       }
     }
     ,components: {
@@ -48,24 +46,9 @@
     ,name: "your-stor"
 
     ,methods:{
-      async getHosts(){
-        let self = this;
 
-        try{
-          let res = await self.$http.get(`${config.BASE_URL}/api/h/all/`);
-
-
-
-          let hosts = res.body.result.hosts;
-          console.log(hosts);
-          self.host = hosts.filter(function(host) {
-            return host.first_name === "Akram"
-          });
-          console.log(self.host);
-        }
-        catch(err){
-          throw err;
-        }
+      base64Img(img){
+        return `data:${img.mimetype};base64,${img.data}`
       }
       ,async getStor(){
         let self = this;
@@ -73,9 +56,7 @@
         try{
           let res = await self.$http.get(`${config.BASE_URL}/api/b/all/`);
 
-          console.log(res);
-
-          self.bookings = res.body.result.items;
+          self.bookings = res.body.result.bookings;
         }
         catch(err){
           throw err;
@@ -88,7 +69,7 @@
       let self = this;
       let $nav = $("#nav");
       let $window = $(window);
-      let $stor = $("#stor");
+      let $overall = $("#overall");
 
       self.$nextTick(function () {
         $window.off("scroll");
@@ -98,13 +79,12 @@
       $nav.addClass("sticky-nav");
 
 
-      $stor.css({
+      $overall.css({
         top: $nav.height()
       });
       try{
-        await self.getHosts();
-        await self.getStor();
 
+        await self.getStor();
       }
       catch(err){
         console.log(err);
@@ -116,26 +96,90 @@
 
 <style scoped>
 
+  #overall{
+    display: flex;
+    flex-direction: column;
+    margin-top: 70px;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+
   #stor{
     display:flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     flex-wrap: wrap;
   }
 
+  img{
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    margin-right: 20px;
+  }
+
+  .date-display{
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    border: 2px solid #4992B7;
+    border-radius: 4px;
+    font-size: 1em;
+    margin: 20px;
+    margin-left: 0;
+    padding: 12px;
+
+  }
+
   .booking{
     background-color: white;
-    color: #336680;
+    color: #4992B7;
     display: flex;
     flex-direction: column;
-    text-align: center;
     font-family: Nunito, Quicksand, sans-serif;
-    font-size: 0.17em;
-    justify-content: space-evenly;
+    font-size: 0.14em;
+    justify-content: left;
+    width: 700px;
+    border-radius: 4px;
+    margin-top: 30px;
+    min-height: 250px;
+    padding: 18px;
+    border: 2px solid #4992B7;
+  }
+  .size-label{
+    width: 40px;
+    height: 40px;
+    background-color: #4992B7;
+    text-align: center;
+    color: white;
+    font-size: 0.6em ;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+
+  }
+  .booking-label{
+    display: flex;
+    flex-direction: row;
+    font-size: 0.8em;
+    justify-content: flex-start;
+  }
+  .time-slot{
+    display: flex;
+    flex-direction: row;
+    font-size: 0.6em;
+
   }
   .item{
-    font-size: 0.11em;
-    margin-bottom: 25px;
+    background-color: white ;
+    color: #4992B7;
+    border: 2px solid #4992B7;
+    border-radius: 4px;
+    flex-direction: column;
+    padding: 12px;
+    margin-top: 10px;
+    font-size: 0.8em;
   }
 
 </style>

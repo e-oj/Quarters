@@ -21,4 +21,4 @@ let Schema = new mongoose.Schema({
   }
 });
 
-exports.Host = mongoose.model("Host", Schema);
+exports.Host = mongoose.model("Hosts", Schema);

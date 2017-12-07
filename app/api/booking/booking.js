@@ -3,7 +3,7 @@
  * @since 11/23/2017
  */
 
-let moduleId = "api/item/item";
+let moduleId = "api/booking/booking";
 let response = require("../../../utils/response");
 let http = require("../../../utils/HttpStats");
 let Host = require("../../models/Host").Host;
@@ -57,12 +57,12 @@ exports.createBooking = async function(req, res){
     pickup.taken = true;
     delivery.taken = true;
 
-    booking = await booking.save();
 
-    console.log(booking);
+    booking = await booking.save();
 
     await pickup.save();
     await delivery.save();
+
 
     respond(http.CREATED,"Booking Created", {item: booking});
   }
@@ -84,9 +84,14 @@ exports.getAllBookings = async function(req, res){
   let respondErr = response.failure(res, moduleId);
   let ownerID = req.user["_id"];
   try{
-    let bookings = await Booking.find({"userID": ownerID});
 
-    respond(http.OK,"All Items Found", {items: bookings});
+    let bookings = await Booking.find({"user": ownerID})
+      .populate("host")
+      .populate("pickup")
+      .populate("delivery")
+      .exec();
+
+    respond(http.OK,"All Items Found", {bookings});
   }
   catch(err){
     respondErr(http.BAD_REQUEST,err.message,err);
