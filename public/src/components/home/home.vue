@@ -238,6 +238,7 @@
     align-items: center;
     justify-content: center;
     width: 110px;
+    text-decoration: none;
   }
 
   #hosts .button:hover{
