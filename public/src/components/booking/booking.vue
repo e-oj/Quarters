@@ -8,6 +8,7 @@
         <div class="header">
           Select Size
           <div class="sub-header">feet</div>
+          <div v-if="errors.size" class="sub-header" style="color:red;">required</div>
         </div>
         <div class="radios">
           <div v-for="s in sizes" class="radio">
@@ -28,7 +29,7 @@
         <div class="pickup">
           <div class="multi-select">
             <label for="pickup-day"></label>
-            <select id="pickup-day" v-model="pickupDay">
+            <select :class="{'error': errors.pickupDay && !pickupDay}" id="pickup-day" v-model="pickupDay">
               <option disabled value="">Pick a day</option>
               <option v-for="day in pickupDays" :value="day">{{day + "th"}}</option>
             </select>
@@ -36,7 +37,7 @@
 
           <div class="multi-select">
             <label for="pickup-time"></label>
-            <select id="pickup-time" :disabled="!pickupDay" v-model="pickupTime">
+            <select :class="{'error': errors.pickupTime && !pickupTime}" id="pickup-time" :disabled="!pickupDay" v-model="pickupTime">
               <option disabled value="">Pick a time</option>
               <option v-for="time in pickupTimes" :value="time">{{time}}</option>
             </select>
@@ -54,7 +55,7 @@
         <div class="delivery">
           <div class="multi-select">
             <label for="delivery-day"></label>
-            <select id="delivery-day" v-model="deliveryDay">
+            <select :class="{'error': errors.deliveryDay && !deliveryDay}" id="delivery-day" v-model="deliveryDay">
               <option disabled value="">Pick a day</option>
               <option v-for="day in deliveryDays" :value="day">{{day + "th"}}</option>
             </select>
@@ -62,7 +63,7 @@
 
           <div class="multi-select">
             <label for="delivery-time"></label>
-            <select id="delivery-time" :disabled="!deliveryDay" v-model="deliveryTime">
+            <select :class="{'error': errors.deliveryTime && !deliveryTime}" id="delivery-time" :disabled="!deliveryDay" v-model="deliveryTime">
               <option disabled value="">Pick a time</option>
               <option v-for="time in deliveryTimes" :value="time">{{time}}</option>
             </select>
@@ -79,10 +80,10 @@
         <div class="items">
           <div v-for="item in items" class="item">
             <label>
-              <input type="text" placeholder="Item Name" v-model="item.name"/>
+              <input :class="{'in-error': item.errors.name}" type="text" placeholder="Item Name" v-model="item.name"/>
             </label>
             <label>
-              <input type="text" placeholder="Item Description" v-model="item.description"/>
+              <input :class="{'in-error': item.errors.description}" type="text" placeholder="Item Description" v-model="item.description"/>
             </label>
           </div>
 
@@ -101,12 +102,20 @@
 <script>
   import config from "../../config"
 
+  let pickup = {};
+  let delivery = {};
+  let errors = {
+    pickupDay: false
+    , pickupTime: false
+    , deliveryDay: false
+    , deliveryTime: false
+    , size: false
+  };
+
   export default{
     data(){
       return {
-        pickup: []
-        , delivery: []
-        , pickupDays: []
+        pickupDays: []
         , deliveryDays: []
         , pickupDay: ""
         , pickupTime: ""
@@ -117,29 +126,116 @@
         , items: [{
           name: ""
           , description: ""
+          , errors: {
+            name: false
+            , description: false
+          }
         }]
+        , errors
         , error: ""
         , success: ""
       }
     }
     , computed: {
+      /**
+       * Pickup times are computed based on
+       * pickup day
+       *
+       * @returns {string[]}
+       */
       pickupTimes(){
         let self = this;
-        let pickup = self.pickup[self.pickupDay];
+        let pickups = pickup[self.pickupDay];
 
-        if(pickup) return Object.keys(pickup).sort();
+        if(pickups) return Object.keys(pickups).sort();
       }
+
+      /**
+       * Delivery Times are computed based on
+       * delivery day
+       *
+       * @returns {string[]}
+       */
       , deliveryTimes(){
         let self = this;
-        let delivery = self.delivery[self.deliveryDay];
+        let deliveries = delivery[self.deliveryDay];
 
-        if(delivery) return Object.keys(delivery).sort();
+        if(deliveries) return Object.keys(deliveries).sort();
       }
     }
     , methods: {
+      /**
+       * compare func for sort
+       *
+       * @param a an element
+       * @param b another element
+       *
+       * @returns {number}
+       */
       compare(a, b){
         return a - b;
       }
+
+      /**
+       * Validates the form before
+       * submission
+       *
+       * @returns {boolean}
+       */
+      , validate(){
+        let self = this;
+        let keys = Object.keys(self.errors);
+        let validated = true;
+
+        for(let key of keys){
+          if(!self[key]){
+            self.errors[key] = true;
+
+            if(validated) validated = false;
+          }
+          else if(self.errors[key]){
+            self.errors[key] = false;
+          }
+        }
+
+        let itemCount = 0;
+
+        for(let item of self.items){
+          let exists = item.name || item.description;
+
+          if(!exists) continue;
+
+          itemCount++;
+
+          for(let key of ["name", "description"]){
+            if(!item[key]){
+              item.errors[key] = true;
+              console.log(item.errors[key]);
+
+              if(validated) validated = false;
+            }
+            else if(item.errors[key]){
+              item.errors[key] = false;
+            }
+          }
+        }
+
+        if(itemCount === 0){
+         let err = self.items[0].errors;
+
+         err.name = err.description = true;
+
+         if(validated) validated = false
+        }
+
+        return validated;
+      }
+
+      /**
+       * Handles form submission
+       *
+       * @returns {Promise.<void>}
+       */
       , async submit(){
         let self = this;
         let booking = {};
@@ -148,17 +244,15 @@
         let pickupTime = self.pickupTime;
         let deliveryTime = self.deliveryTime;
 
+        if (!self.validate()) return;
+
         booking.size = self.size;
-
-        if(pickupDay && deliveryDay && pickupTime && deliveryTime){
-          booking.pickup = self.pickup[pickupDay][pickupTime];
-          booking.delivery = self.delivery[deliveryDay][deliveryTime];
-        }
-
+        booking.pickup = pickup[pickupDay][pickupTime];
+        booking.delivery = delivery[deliveryDay][deliveryTime];
         booking.items = [];
 
         for(let item of self.items){
-          if(item.name && item.description){
+          if(item.name){
             booking.items.push(item);
           }
         }
@@ -168,29 +262,52 @@
 
           self.error = "";
           self.success = res.body.message;
-
-          $(".b-form").find("input").val("");
         }
         catch(err){
           self.success = "";
           self.error = err.body.error.message;
         }
       }
+
+      /**
+       * Adds an item to the list. Causes
+       * the view to update.
+       */
       , addItem(){
         let self = this;
-        self.items.push({});
+
+        self.items.push({errors: {
+          name: false
+          , description: false
+        }});
       }
+
+      /**
+       * Sets the pickup/delivery
+       * dates and times
+       */
       , setTimes(){
         let self = this;
-        let pickup = {};
-        let delivery = {};
+        let pickups = {};
+        let deliveries = {};
 
-        self.pickupDays = self.parseTimes(self.pickup, pickup);
-        self.deliveryDays = self.parseTimes(self.delivery, delivery);
+        self.pickupDays = self.parseTimes(pickup, pickups);
+        self.deliveryDays = self.parseTimes(delivery, deliveries);
 
-        self.pickup = pickup;
-        self.delivery = delivery;
+        pickup = pickups;
+        delivery = deliveries;
       }
+
+      /**
+       * Parses a list objects of date + time strings
+       * into an object
+       *
+       * date format: day-hr:mins e.g. 10-13:30
+       *
+       * @param dates a list of date objects from db
+       * @param result
+       * @returns {Array.<*>|Array}
+       */
       , parseTimes(dates, result){
         let self = this;
         let days = [];
@@ -210,15 +327,22 @@
 
         return days.sort(self.compare);
       }
+
+      /**
+       * Gets a list of available dates from
+       * the api and sets them up for parsing
+       *
+       * @returns {Promise.<void>}
+       */
       , async getTimes(){
         let self = this;
 
         try{
           let res = await self.$http.get(`${config.BASE_URL}/api/b/dates`);
-          let {pickup, delivery} = res.body.result;
+          let {pickup: pickups, delivery: deliveries} = res.body.result;
 
-          self.pickup = pickup;
-          self.delivery = delivery;
+          pickup = pickups;
+          delivery = deliveries;
           self.setTimes();
         }
         catch(err){
@@ -349,7 +473,7 @@
   }
 
   select:disabled{
-    color: #4992B7;
+    opacity: 0.5;
   }
 
   .b-form .pickup, .b-form .delivery,  .b-form .item{
@@ -400,7 +524,11 @@
   }
 
   .b-form .error{
-    color: red;
+    color: red !important;
+  }
+
+  .b-form .in-error::placeholder{
+    color: red !important;
   }
 
   .b-form .success{
