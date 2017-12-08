@@ -113,8 +113,8 @@
 
   img{
     border-radius: 50%;
-    height: 40px;
-    width: 40px;
+    height: 60px;
+    width: 60px;
     margin-right: 20px;
   }
 
@@ -147,12 +147,11 @@
     border: 2px solid #4992B7;
   }
   .size-label{
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     background-color: #4992B7;
     text-align: center;
     color: white;
-    font-size: 0.6em ;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -172,6 +171,7 @@
 
   }
   .item{
+    margin-bottom: 10px;
     background-color: white ;
     color: #4992B7;
     border: 2px solid #4992B7;

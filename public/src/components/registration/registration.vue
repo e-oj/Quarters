@@ -19,22 +19,25 @@
                     <label for="alias"></label>
                     <input id="alias" v-model="alias" class="input" type="text" required placeholder="Username">
                   </div>
+                 <div>
+                   <label for="email"></label>
+                   <input id="email" v-model="email" class="input" type="email" required placeholder="Email">
+                 </div>
                   <div>
                     <label for="password"></label>
                     <input id="password" v-model="password" class="input" type="password" required placeholder="Password">
                   </div>
                   <div>
-                    <label for="email"></label>
-                    <input id="email" v-model="email" class="input" type="email" required placeholder="Email">
-                  </div>
-                  <div>
                     <label for="address"></label>
                     <input id="address" v-model="address" class="input" type="text" required placeholder="Address">
                   </div>
-
                   <div>
                     <label for="city"></label>
-                    <input id="city" v-model="city" class="input" type="text" required placeholder="City">
+                    <select id="city" v-model="city" class="input" required>
+                      <option value="" disabled="disabled" selected="selected">Select City</option>
+                      <option value="1">Rochester</option>
+                      <option value="2">Buffalo</option>
+                    </select>
                   </div>
                   <div>
                     <label for="phone"></label>
@@ -42,8 +45,13 @@
                   </div>
                   <div>
                     <label for="state"></label>
-                    <input id="state" v-model="state" class="input" type="text" required placeholder="State">
+                    <select id="state" v-model="state" class="input" required>
+                      <option value="" disabled="disabled" selected="selected">Select State</option>
+                      <option value="1">New York</option>
+                      <option value="2">Massachusetts</option>
+                    </select>
                   </div>
+
                </div>
 
               <button type="submit" class="button">Sign Up</button>
@@ -84,27 +92,28 @@
         let {alias, email,first_name,last_name,address,phone, password} = self;
 
         try{
-          let User = {alias,first_name,last_name,address,phone,password,email};
-          let signupRoute = `${config.BASE_URL}/api/u/`;
-          let res = await self.$http.post(signupRoute, User,{
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          });
+            let User = {alias,first_name,last_name,address,phone,password,email};
+            let signupRoute = `${config.BASE_URL}/api/u/`;
+            let res = await self.$http.post(signupRoute, User,{
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            });
 
-          let {token, user} = res.body.result;
+            console.log(res);
+            console.log(res.body.result);
+            let {token, user} = res.body.result;
 
-          localStorage.setItem(config.AUTH, token);
-          localStorage.setItem(config.ADMIN, user.admin);
+            localStorage.setItem(config.AUTH, token);
+            localStorage.setItem(config.ADMIN, user.admin);
 
-          router.push({path:"/"});
+            router.push({path:"/book"});
         }
         catch(err){
           console.log(err);
         }
       }
-    },
-    mounted(){
+    }, mounted(){
       let self = this;
       let $nav = $("#nav");
       let $window = $(window);
@@ -139,14 +148,18 @@
     flex-direction: row;
     width: inherit;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: space-around;
+
   }
 
+  form{
+    border-radius: 4px;
+  }
   #form-border{
     display: flex;
     flex-direction: row;
     background-color: #336680;
-    border-radius: 0;
+    border-radius: 4px;
     min-width: 500px;
     margin: auto;
     margin-bottom: 20px;
@@ -156,7 +169,7 @@
   #form-border button{
     font-size: 0.11em;
     width: 60px;
-    border-radius: 0;
+    border-radius: 4px;
   }
   #splash p{
     margin: 0;
@@ -173,6 +186,20 @@
     margin-left: 5px;
     margin-right: 5px;
     width:auto
+  }
+  select{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: none;
+    border-bottom: 2px solid white;
+    color: white;
+    transition: all 0.2s linear;
+    outline: none;
+    background: inherit;
+    font-size: 0.11em;
+    margin-left: 5px;
+    margin-right: 5px;
+    width:auto;
   }
   #reg-form{
     flex-direction: column;

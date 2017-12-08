@@ -8,8 +8,7 @@
         <ul>
           <li><a href="/">About</a></li>
           <li><a href="/">Hosts</a></li>
-          <li><a href="/">Rates</a></li>
-          <li v-if="!loggedIn"><a href="/">Team</a></li>
+          <li><a href="">Rates</a></li>
           <li v-if="loggedIn"><router-link to="/your-stor">Your Stör</router-link></li>
         </ul>
 
