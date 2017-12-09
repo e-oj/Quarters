@@ -374,7 +374,6 @@
       $container.css({
         top: $nav.height()
       });
-      console.log(self.pickup);
     }
   }
 </script>
@@ -467,6 +466,7 @@
     text-indent: 5px;
     color: #396F89;
     transition: all 0.2s linear;
+    text-align: left;
   }
 
   select:hover{
