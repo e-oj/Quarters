@@ -11,7 +11,7 @@
                   <input :class="{'error': errors.first_name && !first_name}" id="first-name" v-model="first_name" type="text"  placeholder="First Name">
                 </label>
                 <label for="last-name">
-                  <input :class="{'error': errors.last_name && !last_name}" id="last-name" v-model="last_name" type="text"  placeholder="Last Name">
+                  <input :class="{'error': errors.last_name && !last_name}" id="last-name" v-model="last_name" type="text"  placeholder="Last Name" >
                 </label>
                 <label for="email">
                   <input :class="{'error': errors.email && !email}" id="email" v-model="email" type="email"  placeholder="Email">
@@ -19,9 +19,13 @@
 
               </div>
               <div class="row">
-                <label for="alias">
-                  <input :class="{'error': errors.alias && !alias}" id="alias" v-model="alias" type="text" placeholder="Username">
-                </label>
+                <div class="username">
+                  <label for="alias">
+                    <input :class="{'error': errors.alias && !alias}" id="alias" v-model="alias" type="text" placeholder="Username">
+                    <br>
+                    <span v-if="errors.username_error" class="sub-header" style="color:red;">No spaces in username</span>
+                  </label>
+                </div>
                 <label for="password">
                   <input :class="{'error': errors.password && !password}" id="password" v-model="password" type="password"  placeholder="Password">
                 </label>
@@ -38,19 +42,18 @@
                   </select>
                 </label>
                 <label for="state">
-                  <select :class="{'error': errors.state && !state}" id="state" v-model="state" class="input" >
+                  <select :class="{'error': errors.state && !state}" id="state" v-model="state">
                     <option value="" disabled="disabled" selected="selected">Select State</option>
                     <option value="1">New York</option>
                     <option value="2">Massachusetts</option>
                   </select>
                 </label>
                 <label for="phone">
-                  <input :class="{'error': errors.phone && !phone}" id="phone" v-model="phone" type="tel" placeholder="Phone">
+                  <input :class="{'error': errors.phone && !phone}" id="phone" v-model="phone" type="tel" placeholder="Phone" >
                 </label>
 
               </div>
               <div class="row">
-
 
                 <button type="submit" class="button">Sign Up</button>
               </div>
@@ -78,6 +81,7 @@
     , city: false
     , state:false
     , phone:false
+    , username_error: ''
   };
 
   export default {
@@ -93,6 +97,7 @@
           state: '',
           phone: '',
           errors,
+
 
       }
 
@@ -115,6 +120,12 @@
             self.errors[key] = false;
           }
         }
+        let username = self["alias"];
+        if(/\s/.test(username)){
+          console.log("username has space!!");
+          self.username_error="No spaces in username";
+          validated = false;
+        }
 
         return validated;
       }
@@ -126,6 +137,7 @@
         let User = {alias,first_name,last_name,address,phone,password,email};
 
         if (!self.validate()) return;
+
 
         try{
 
@@ -274,18 +286,25 @@
     opacity: 1;
   }
 
-
-
   .r-form .error{
     color: red !important;
   }
 
-  .r-form .in-error::placeholder{
+  .r-form .error::placeholder{
     color: red !important;
   }
 
   .r-form .success{
     color: green;
+  }
+
+  .r-form .sub-header{
+    font-size: 0.5em;
+    text-align: center;
+    margin: 10px;
+  }
+  .username{
+    display: block;
   }
 
 </style>
