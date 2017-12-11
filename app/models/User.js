@@ -1,11 +1,11 @@
 /**
- * @author EmmanuelOlaojo
- * @since 11/23/17
+ * @author Emmanuel Olaojo
+ * @since 12/3/17
  */
-
 let mongoose = require("mongoose");
 let bcrypt = require("bcrypt");
 let validator = require("validator");
+
 
 const REQUIRED = "{PATH} is required";
 

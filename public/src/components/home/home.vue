@@ -39,6 +39,9 @@
 
       <router-link class="button" to="/hosts">All Hosts</router-link>
     </div>
+    <div id="rates-image">
+      <img name="rates" src="../../assets/icons/rateimg.png"/>
+    </div>
   </div>
 </template>
 
@@ -165,6 +168,15 @@
     margin-top: 15px;
   }
 
+  #rates-image{
+    justify-content: center;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    color:white;
+    height: 100%;
+    width: 100%;
+
+  }
   #email-in::placeholder{
     opacity: 0.5;
     transition: all 0.2s linear;

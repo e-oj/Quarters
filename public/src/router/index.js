@@ -13,6 +13,7 @@ import AdminHost from "../components/admin/add.hosts.vue";
 import Registration from "../components/registration/registration.vue";
 import Booking from "../components/booking/booking.vue";
 import Hosts from "../components/host/hosts";
+import Stor from "../components/your-stör/your-stör.vue";
 
 Vue.use(Router);
 
@@ -31,5 +32,6 @@ export default new Router({
     , {path:"/register", component: Registration}
     , {path: "/book",component: Booking}
     , {path: "/hosts", component: Hosts}
+    ,{path: "/your-stor", component: Stor}
   ]
 });
