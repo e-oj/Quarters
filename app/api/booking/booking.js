@@ -10,6 +10,7 @@ let Host = require("../../models/Host").Host;
 let Booking = require("../../models/booking").Booking;
 let Pickup = require("../../models/Dates").Pickup;
 let Delivery = require("../../models/Dates").Delivery;
+let nodeMailer = require("nodemailer");
 
 /**
  * Creates Booking and returns success or failure response
@@ -63,8 +64,38 @@ exports.createBooking = async function(req, res){
     await pickup.save();
     await delivery.save();
 
-
     respond(http.CREATED,"Booking Created", {item: booking});
+
+    let messageObject = {
+      user: req.user
+      ,HostName: booking.host.first_name
+      ,Pickup: pickup.date
+      ,Delivery: delivery.date
+    };
+
+    let message = JSON.stringify(messageObject);
+
+    let transporter = nodeMailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "thestorteam@gmail.com",
+        pass: "T3x%a10!"
+      }
+    });
+
+    let mailOptions = {
+      from: "thestorteam@gmail.com",
+      to: "thestorteam@gmail.com",
+      subject: "New Stör Booking!",
+      text: message
+    };
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
   }
   catch(err){
     respondErr(http.BAD_REQUEST,err.message,err);
