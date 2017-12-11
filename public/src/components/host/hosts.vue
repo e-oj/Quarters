@@ -79,6 +79,7 @@
     margin: auto;
     position: relative;
     text-align: center;
+    font-family: Nunito, Quicksand, sans-serif;
   }
 
   #host-page{

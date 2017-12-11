@@ -1,6 +1,6 @@
 /**
- * @author EmmanuelOlaojo
- * @since 11/23/17
+ * @author Emmanuel Olaojo
+ * @since 12/3/17
  */
 
 let moduleId = "users/user";
@@ -11,6 +11,7 @@ let response = require("../../../utils/response");
 let http = require("../../../utils/HttpStats");
 let User = require("../../models/User").User;
 let auth = require("../../../utils/authToken");
+
 
 /**
  * Route handler to get users
