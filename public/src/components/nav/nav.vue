@@ -6,9 +6,9 @@
       </div>
       <div id="nav-items">
         <ul>
-          <li><a href="/">About</a></li>
-          <li><a href="/">Hosts</a></li>
-          <li><a href="">Rates</a></li>
+          <li><router-link to="/#how">About</router-link></li>
+          <li><router-link to="/hosts">Hosts</router-link></li>
+          <li><router-link to="/#rates">Rates</router-link></li>
           <li v-if="loggedIn"><router-link to="/your-stor">Your Stör</router-link></li>
         </ul>
 
@@ -43,6 +43,8 @@
         localStorage.removeItem(config.ADMIN);
         self.loggedIn = false;
         self.showLogin = false;
+
+        location.href = "/";
       }
 
       , displayLogin(){

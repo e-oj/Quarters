@@ -92,7 +92,10 @@
       </div>
 
       <div v-if="error" class="header error">{{error}}</div>
-      <div v-if="success" class="header success">{{success}}</div>
+      <div v-if="success" class="header success">
+        {{success}} <br>
+        View Bookings @ <router-link to="/your-stor">your stor</router-link>
+      </div>
 
       <button class="button">Book Now</button>
     </form>
