@@ -48,8 +48,9 @@
         <input :class="{'error': errors.phone && !phone}" id="phone" v-model="phone" type="tel" placeholder="Phone" >
 
       </div>
+      <div v-if="error" class="header error">{{error}}</div>
+      <div v-if="success" class="header success">{{success}}</div>
       <div class="row">
-
         <button type="submit" class="button">Sign Up</button>
       </div>
     </form>
@@ -91,6 +92,8 @@
         state: '',
         phone: '',
         errors,
+        error: "",
+        success: ""
       }
     },
     methods: {
@@ -134,7 +137,11 @@
             }
           });
 
+
           let {token, user} = res.body.result;
+
+          self.error = "";
+          self.success = res.body.message;
 
           localStorage.setItem(config.AUTH, token);
           localStorage.setItem(config.ADMIN, user.admin);
@@ -144,6 +151,8 @@
         }
         catch(err){
           console.log(err);
+          self.success = "";
+          self.error = err.body.error.message;
         }
       }
     }, mounted(){
