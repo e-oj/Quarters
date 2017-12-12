@@ -34,4 +34,15 @@ export default new Router({
     , {path: "/hosts", component: Hosts}
     ,{path: "/your-stor", component: Stor}
   ]
+  , scrollBehavior (to) {
+    if(to.hash){
+      return {
+        selector: to.hash
+        , offset: {x: 0, y: 100}
+      };
+    }
+    else{
+      return {x: 0, y: 0};
+    }
+  }
 });

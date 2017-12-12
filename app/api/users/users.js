@@ -73,6 +73,7 @@ exports.createUser = async (req, res) => {
     respond(http.CREATED, "User Created", {user, token});
   }
   catch(err){
+    console.log(err);
     respondErr(http.BAD_REQUEST, err.message, err);
   }
 };

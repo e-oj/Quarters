@@ -19,9 +19,8 @@
           </div>
         </div>
           <div class="item" v-for="item in booking.items">
-            {{item.name}}: {{item.description}}
+            <span>{{item.name}}:</span> {{item.description}}
           </div>
-
     </div>
     </div>
   </div>
@@ -44,25 +43,22 @@
     "host": Host
     }
     ,name: "your-stor"
-
     ,methods:{
-
       base64Img(img){
         return `data:${img.mimetype};base64,${img.data}`
       }
-      ,async getStor(){
+      , async getStor(){
         let self = this;
 
         try{
           let res = await self.$http.get(`${config.BASE_URL}/api/b/all/`);
 
-          self.bookings = res.body.result.bookings;
+          self.bookings = res.body.result.bookings.reverse();
         }
         catch(err){
           throw err;
         }
       }
-
     },
 
     async mounted(){
@@ -105,10 +101,11 @@
   }
 
   #stor{
-    display:flex;
-    flex-direction: row;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
-    flex-wrap: wrap;
+    align-items: center;
+    color: #396F89;
   }
 
   img{
@@ -123,12 +120,15 @@
     flex-direction: row;
     text-align: center;
     border: 2px solid #4992B7;
+    width: 45%;
     border-radius: 4px;
     font-size: 1em;
-    margin: 20px;
-    margin-left: 0;
+    margin-top: 20px;
     padding: 12px;
+  }
 
+  .date-display h2{
+    font-size: 1.2em;
   }
 
   .booking{
@@ -156,7 +156,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 4px;
-
+    font-size: 0.7em;
   }
   .booking-label{
     display: flex;
@@ -168,18 +168,20 @@
     display: flex;
     flex-direction: row;
     font-size: 0.6em;
-
+    justify-content: space-between;
   }
   .item{
-    margin-bottom: 10px;
     background-color: white ;
     color: #4992B7;
     border: 2px solid #4992B7;
     border-radius: 4px;
     flex-direction: column;
     padding: 12px;
-    margin-top: 10px;
-    font-size: 0.8em;
+    margin-top: 15px;
+    font-size: 0.7em;
   }
 
+  .item span{
+    font-weight: 900;
+  }
 </style>
