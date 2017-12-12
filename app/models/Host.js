@@ -1,4 +1,7 @@
-/* eslint-disable quotes */
+/**
+ * @author Chike Udenze
+ * @since 12/3/17
+ */
 
 let mongoose = require("mongoose");
 const ERR_REQUIRED = `{PATH} is required`;
@@ -18,4 +21,4 @@ let Schema = new mongoose.Schema({
   }
 });
 
-exports.Host = mongoose.model("Host", Schema);
+exports.Host = mongoose.model("Hosts", Schema);

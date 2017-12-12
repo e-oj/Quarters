@@ -92,7 +92,10 @@
       </div>
 
       <div v-if="error" class="header error">{{error}}</div>
-      <div v-if="success" class="header success">{{success}}</div>
+      <div v-if="success" class="header success">
+        {{success}} <br>
+        View Bookings @ <router-link to="/your-stor">your stor</router-link>
+      </div>
 
       <button class="button">Book Now</button>
     </form>
@@ -466,6 +469,7 @@
     text-indent: 5px;
     color: #396F89;
     transition: all 0.2s linear;
+    text-align: left;
   }
 
   select:hover{

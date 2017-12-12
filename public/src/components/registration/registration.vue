@@ -1,58 +1,60 @@
 <!-- @author Chike Udenze
      @since 11/29/2017
  -->
-
-
 <template>
-    <div id="register">
-          <!-- form starts here -->
-          <div id="form-border">
-            <form id="reg-form" @submit.prevent="signup">
-               <div id="reg-form-inputs">
-                  <div>
-                    <label for="first-name"></label>
-                    <input id="first-name" v-model="first_name" class="input" type="text" required placeholder="First Name">
-                  </div>
-                  <div>
-                    <label for="last-name"></label>
-                    <input id="last-name" v-model="last_name" class="input" type="text" required placeholder="Last Name">
-                  </div>
-                  <div>
-                    <label for="alias"></label>
-                    <input id="alias" v-model="alias" class="input" type="text" required placeholder="Username">
-                  </div>
-                  <div>
-                    <label for="password"></label>
-                    <input id="password" v-model="password" class="input" type="password" required placeholder="Password">
-                  </div>
-                  <div>
-                    <label for="email"></label>
-                    <input id="email" v-model="email" class="input" type="email" required placeholder="Email">
-                  </div>
-                  <div>
-                    <label for="address"></label>
-                    <input id="address" v-model="address" class="input" type="text" required placeholder="Address">
-                  </div>
+  <div id="register">
+    <!-- form starts here -->
+    <form class="r-form" @submit.prevent="signup">
 
-                  <div>
-                    <label for="city"></label>
-                    <input id="city" v-model="city" class="input" type="text" required placeholder="City">
-                  </div>
-                  <div>
-                    <label for="phone"></label>
-                    <input id="phone" v-model="phone" class="input" type="tel" required placeholder="Phone">
-                  </div>
-                  <div>
-                    <label for="state"></label>
-                    <input id="state" v-model="state" class="input" type="text" required placeholder="State">
-                  </div>
-               </div>
+      <div class="row">
+        <label for="first-name"></label>
+        <input :class="{'error': errors.first_name && !first_name}" id="first-name" v-model="first_name" type="text"  placeholder="First Name">
 
-              <button type="submit" class="button">Sign Up</button>
+        <label for="last-name"></label>
+        <input :class="{'error': errors.last_name && !last_name}" id="last-name" v-model="last_name" type="text"  placeholder="Last Name" >
 
-            </form>
-          </div>
+        <label for="email"></label>
+        <input :class="{'error': errors.email && !email}" id="email" v-model="email" type="email"  placeholder="Email">
+
+      </div>
+      <div class="row">
+        <div class="username">
+          <label for="alias"></label>
+          <input v-model="alias" :class="{'error': errors.alias && !alias}" id="alias" type="text" placeholder="Username">
         </div>
+
+        <label for="password"></label>
+        <input :class="{'error': errors.password && !password}" id="password" v-model="password" type="password"  placeholder="Password">
+
+        <label for="address"></label>
+        <input :class="{'error': errors.address && !address}" id="address" v-model="address" type="text"  placeholder="Address">
+
+      </div>
+      <div class="row">
+        <label for="city"></label>
+        <select :class="{'error': errors.city && !city}" id="city" v-model="city" >
+          <option value="" disabled="disabled">Select City</option>
+          <option value="1">Rochester</option>
+          <option value="2">Buffalo</option>
+        </select>
+        <label for="state"></label>
+        <select :class="{'error': errors.state && !state}" id="state" v-model="state">
+          <option value="" disabled="disabled" selected="selected">Select State</option>
+          <option value="1">New York</option>
+          <option value="2">Massachusetts</option>
+        </select>
+
+        <label for="phone"></label>
+        <input :class="{'error': errors.phone && !phone}" id="phone" v-model="phone" type="tel" placeholder="Phone" >
+
+      </div>
+      <div class="row">
+
+        <button type="submit" class="button">Sign Up</button>
+      </div>
+    </form>
+
+  </div>
 </template>
 
 
@@ -64,29 +66,67 @@
 
   Vue.use(VueResource);
 
+  let errors = {
+    last_name: false
+    , first_name: false
+    , alias: false
+    , password: false
+    , email: false
+    , address: false
+    , city: false
+    , state:false
+    , phone:false
+  };
+
   export default {
     data() {
       return {
-          first_name: '',
-          last_name: '',
-          alias: '',
-          password: '',
-          address: '',
-          email: '',
-          city: '',
-          state: '',
-          phone: ''
+        first_name: '',
+        last_name: '',
+        alias: '',
+        password: '',
+        address: '',
+        email: '',
+        city: '',
+        state: '',
+        phone: '',
+        errors,
+      }
+    },
+    methods: {
+      validate(){
+        let self = this;
+        let keys = Object.keys(self.errors);
+        console.log(keys);
+        let validated = true;
+
+        for(let key of keys){
+          if(!self[key]){
+            self.errors[key] = true;
+
+            if(validated) validated = false;
+          }
+          else if(self.errors[key]){
+            self.errors[key] = false;
+          }
+        }
+
+        return validated;
       }
 
-
-      },
-    methods: {
-      signup: async function(){
+      ,signup: async function(){
         let self = this;
         let {alias, email,first_name,last_name,address,phone, password} = self;
 
+        let User = {alias,first_name,last_name,address,phone,password,email};
+
+        if (!self.validate()){
+          console.log("Nope!!");
+          return;
+        }
+
         try{
-          let User = {alias,first_name,last_name,address,phone,password,email};
+
           let signupRoute = `${config.BASE_URL}/api/u/`;
           let res = await self.$http.post(signupRoute, User,{
             headers: {
@@ -94,21 +134,19 @@
             }
           });
 
-          console.log(res);
-          console.log(res.body.result);
           let {token, user} = res.body.result;
 
           localStorage.setItem(config.AUTH, token);
           localStorage.setItem(config.ADMIN, user.admin);
 
-          router.push({path:"/"});
+          router.push({path:"/book"});
+          location.reload();
         }
         catch(err){
           console.log(err);
         }
       }
-    },
-    mounted(){
+    }, mounted(){
       let self = this;
       let $nav = $("#nav");
       let $window = $(window);
@@ -129,70 +167,137 @@
 </script>
 
 <style>
-  #register{
-    background-color: white ;
+  #register {
+    position: relative;
+    font-size: 0.17em;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    align-content: center;
-    position: relative;
-    padding-bottom: 35px;
+    font-family: Nunito, Quicksand, sans-serif;
+    color: #396F89;
+    background-color: white;
+    padding: 18px;
   }
-  #reg-form-inputs{
-    display:flex;
-    flex-direction: row;
-    width: inherit;
+
+  #register h1{
+    text-align: center;
+    font-size: 1.2em;
+    margin: 50px;
+  }
+
+  .r-form {
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+    width: 700px;
+    border:  2px solid #4992B7;
+    border-radius: 4px;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    margin: auto;
+    padding: 15px;
+    padding-bottom: 0;
+    font-size: 0.7em;
   }
 
-  #form-border{
+  .r-form .header{
+    font-size: 0.6em;
+    text-align: center;
+    margin: 10px;
+  }
+
+  .r-form button{
+    width: 100px;
+    height: 35px;
+    color: #35667F;
+    background: white;
+    border: 2px solid #4992B7;
+    margin: 0;
+    font-size: 0.7em;
+  }
+
+  .r-form .row{
     display: flex;
     flex-direction: row;
-    background-color: #336680;
-    border-radius: 0;
-    min-width: 500px;
-    margin: auto;
-    margin-bottom: 20px;
-    margin-top:15px;
+    justify-content: space-evenly;
   }
 
-  #form-border button{
-    font-size: 0.11em;
-    width: 60px;
+  .r-form label{
+    display: none;
+  }
+
+  select, input{
+    -webkit-appearance: none;
+    -moz-appearance: none;
     border-radius: 0;
-  }
-  #splash p{
-    margin: 0;
-    font-size: 0.16em;
-    text-align: center;
-  }
-  input{
-    outline: none;
-    background: inherit;
     border: none;
-    color: white;
-    border-bottom: 2px solid white;
-    font-size: 0.11em;
-    margin-left: 5px;
-    margin-right: 5px;
-    width:auto
+    border-bottom: 2px solid #4992B7;
+    color: #396F89;
+    transition: all 0.2s linear;
+    width: 190px;
+    font-size: 0.7em;
+    padding: 7px;
+    padding-left: 0;
+    background-color: transparent;
+    box-sizing: border-box;
   }
-  #reg-form{
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    display: flex;
-    width: 700px;
-    padding: 20px;
+
+  select:focus, input:focus{
+    outline: none;
+    border-color: green;
+    color: green;
   }
 
   input::placeholder{
-    opacity: 0.5;
-    transition: all 0.2s linear;
-  }
-
-  input:focus::placeholder, input:hover::placeholder{
+    color: #396F89;
     opacity: 1;
   }
+
+  input:focus::placeholder{
+    color: green;
+  }
+
+  select:hover{
+    cursor: pointer;
+  }
+
+  select:disabled{
+    text-indent: 5px;
+  }
+  .r-form button:hover{
+    color: white;
+    background: #4992B7;
+  }
+
+  .r-form input{
+    text-indent: 5px;
+  }
+  .r-form select{
+    text-indent: 5px;
+  }
+  .r-form option{
+    text-indent: 5px;
+  }
+
+  .r-form .error{
+    color: red !important;
+  }
+
+  .r-form .error::placeholder{
+    color: red !important;
+  }
+
+  .r-form .success{
+    color: green;
+  }
+
+  .r-form .sub-header{
+    font-size: 0.5em;
+    text-align: center;
+    margin: 10px;
+  }
+  .username{
+    display: inline-flex;
+    flex-direction: column;
+  }
+
 </style>

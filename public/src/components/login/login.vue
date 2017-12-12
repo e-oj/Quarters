@@ -60,6 +60,7 @@
 
         self.$parent.loggedIn =  !!localStorage.getItem("auth");
         self.$parent.showLogin = false;
+        location.reload();
       }
     }
   }

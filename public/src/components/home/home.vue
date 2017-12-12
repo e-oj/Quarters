@@ -27,7 +27,8 @@
           </p>
         </div>
       </div>
-      <button class="button">Book Now</button>
+      <router-link tag="button" v-if="loggedIn()" to="/book" class="button">Book Now</router-link>
+      <router-link tag="button" v-else to="/register" class="button">Sign Up</router-link>
     </div>
 
     <div id="hosts">
@@ -38,6 +39,10 @@
       </div>
 
       <router-link class="button" to="/hosts">All Hosts</router-link>
+    </div>
+
+    <div id="rates">
+      <img name="rates" src="../../assets/icons/rateimg.png"/>
     </div>
   </div>
 </template>
@@ -53,7 +58,7 @@
         , how: [
           {
             description: "Select a size option and we'll match you with a host provider. " +
-              "Schedule a pick up and delivery dates"
+              "Schedule pick up and delivery dates"
             , img: {
               src: "/src/assets/icons/calendar_2x.png"
               , width: 76
@@ -85,13 +90,17 @@
       "host": Host
     }
     , methods: {
+      loggedIn(){
+        return !!localStorage.getItem(config.AUTH);
+      }
+
       /**
        * gets three hosts from the server
        * and assigns them to self.hosts
        *
        * @returns {Promise.<void>}
        */
-      async getHosts(){
+      , async getHosts(){
         let self = this;
 
         try{
@@ -244,5 +253,14 @@
   #hosts .button:hover{
     background-color: #35667F;
     color: white;
+  }
+
+  #rates{
+    height: 90%;
+    font-size: 0;
+  }
+
+  #rates, #rates img{
+    width: 100%;
   }
 </style>
