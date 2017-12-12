@@ -15,6 +15,7 @@
         <div class="nav-action">
           <router-link v-if="loggedIn" to="/book">Book Now</router-link>
           <router-link v-else to="/register">Sign Up</router-link>
+
           <a v-if="loggedIn" class="sign-out" @click="signOut">Sign Out</a>
           <a v-else class="login" @click="displayLogin">Login</a>
         </div>
