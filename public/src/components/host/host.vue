@@ -44,6 +44,7 @@
     align-items: center;
     background-color: #4C92B5;
     font-family: Nunito, Quicksand, sans-serif;
+    font-size: 0.8em;
   }
 
   .host .head img{
