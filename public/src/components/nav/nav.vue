@@ -3,6 +3,7 @@
     <div id="nav-bar">
       <div class="logo">
         <a href="/"><img src="/src/assets/icons/logo.png"/></a>
+        beta
       </div>
       <div id="nav-items">
         <ul>
@@ -109,7 +110,9 @@
     align-items: center;
     align-content: center;
   }
-
+  #nav-bar.logo{
+    font-size: 0.6em;
+  }
   #nav-bar .logo{
     margin-right: auto;
     width: 20%;
