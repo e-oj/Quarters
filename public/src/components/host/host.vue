@@ -52,6 +52,7 @@
     height: 50px;
     border-radius: 50%;
     padding: 5px 0;
+    font-size: 0.8em;
   }
 
   .host h4{
@@ -62,7 +63,8 @@
   }
 
   .storage-img img{
-    width: 100%;
+    width: 300px;
+    height:230px;
   }
   a { color: inherit; }
 </style>
