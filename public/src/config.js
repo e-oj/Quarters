@@ -4,7 +4,7 @@
  */
 
 export default {
-  BASE_URL: "http://localhost:8345"
+  BASE_URL: ""
   , AUTH: "auth"
   , ADMIN: "admin"
   , AUTH_TOKEN: "x-auth-token"
