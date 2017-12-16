@@ -15,8 +15,8 @@
 
         <label for="email"></label>
         <input :class="{'error': errors.email && !email}" id="email" v-model="email" type="email"  placeholder="Email">
-
       </div>
+
       <div class="row">
         <div class="username">
           <label for="alias"></label>
@@ -28,8 +28,8 @@
 
         <label for="address"></label>
         <input :class="{'error': errors.address && !address}" id="address" v-model="address" type="text"  placeholder="Address">
-
       </div>
+
       <div class="row">
         <label for="city"></label>
         <select :class="{'error': errors.city && !city}" id="city" v-model="city" >
@@ -46,8 +46,8 @@
 
         <label for="phone"></label>
         <input :class="{'error': errors.phone && !phone}" id="phone" v-model="phone" type="tel" placeholder="Phone" >
-
       </div>
+
       <div v-if="error" class="header error">{{error}}</div>
       <div v-if="success" class="header success">{{success}}</div>
       <div class="row">
@@ -234,7 +234,7 @@
     display: none;
   }
 
-  select, input{
+  .r-form select, .r-form input{
     -webkit-appearance: none;
     -moz-appearance: none;
     border-radius: 0;
@@ -250,26 +250,26 @@
     box-sizing: border-box;
   }
 
-  select:focus, input:focus{
+  .r-form select:focus, input:focus{
     outline: none;
     border-color: green;
     color: green;
   }
 
-  input::placeholder{
+  .r-form input::placeholder{
     color: #396F89;
     opacity: 1;
   }
 
-  input:focus::placeholder{
+  .r-form input:focus::placeholder{
     color: green;
   }
 
-  select:hover{
+  .r-form select:hover{
     cursor: pointer;
   }
 
-  select:disabled{
+  .r-form select:disabled{
     text-indent: 5px;
   }
   .r-form button:hover{
