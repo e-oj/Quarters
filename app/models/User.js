@@ -1,5 +1,5 @@
 /**
- * @author Emmanuel Olaojo
+ * @author Joel Ossai
  * @since 12/3/17
  */
 let mongoose = require("mongoose");
